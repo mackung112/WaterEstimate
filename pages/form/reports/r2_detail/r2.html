@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>รายละเอียดประมาณการ (R2)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="r2.css">
+</head>
+
+<body>
+
+    <div class="no-print" style="position: fixed; top: 10px; right: 10px; z-index: 1000; display: flex; gap: 10px;">
+        <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold shadow">🖨️ พิมพ์</button>
+    </div>
+
+    <div class="a4-page">
+
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-title">รายละเอียดประมาณการติดตั้งและวางท่อประปา</div>
+
+            <div class="header-row-2">
+                <span>การประปาส่วนภูมิภาคสาขาพระนครศรีอยุธยา (ชั้นพิเศษ)</span>
+                <span>ประมาณการเลขที่ <span id="val_est_no" class="info-data"></span></span>
+                <span>ผู้ใช้น้ำเลขที่ <span id="val_user_no" class="info-data"></span></span>
+            </div>
+
+            <div class="header-row-3">
+                <span>ชื่อ <span id="val_customer_name" class="info-data"></span></span>
+                <span>บ้านเลขที่ <span id="val_house_no" class="info-data"></span></span>
+                <span>หมู่ที่ <span id="val_moo" class="info-data"></span></span>
+                <span>ตำบล <span id="val_tambon" class="info-data"></span></span>
+                <span>อำเภอ <span id="val_amphoe" class="info-data"></span></span>
+                <span>จังหวัด <span id="val_province" class="info-data"></span></span>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <table class="estimate-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-seq">ลำดับที่</th>
+                    <th rowspan="2" class="col-item">รายการ</th>
+                    <th rowspan="2" class="col-size">ขนาด</th>
+                    <th rowspan="2" class="col-qty">จำนวน</th>
+                    <th rowspan="2" class="col-unit">หน่วย<br>นับ</th>
+                    <th colspan="2">ค่าวัสดุอุปกรณ์</th>
+                    <th colspan="2">ค่าแรง</th>
+                    <th rowspan="2" class="col-money">รวมเงิน</th>
+                </tr>
+                <tr>
+                    <th class="col-money">ต่อหน่วย</th>
+                    <th class="col-money">เป็นเงิน</th>
+                    <th class="col-money">ต่อหน่วย</th>
+                    <th class="col-money">เป็นเงิน</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td colspan="10" class="text-center py-5">กำลังโหลดข้อมูล...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Signatures -->
+        <div class="signature-area">
+            <!-- Block 1: Surveyor -->
+            <div class="sig-block">
+                <table class="sig-layout-table">
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <!-- กล่องลายเซ็น (อยู่เหนือกึ่งกลางจุดไข่ปลา) -->
+                            <div id="sig_surveyor_container" class="sig-box"></div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center" style="white-space: nowrap;">
+                            ลงชื่อ .......................................................... ช่างสำรวจ/ประมาณการ
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            ( <span id="val_surveyor_name">..........................................</span> )
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <span id="val_surveyor_pos">..........................................</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Block 2: Approver -->
+            <div class="sig-block">
+                <table class="sig-layout-table">
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <!-- กล่องลายเซ็น (อยู่เหนือกึ่งกลางจุดไข่ปลา) -->
+                            <div id="sig_approver_container" class="sig-box"></div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center" style="white-space: nowrap;">
+                            ลงชื่อ .......................................................... ผู้ตรวจประมาณการ
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            ( <span id="val_approver_name">..........................................</span> )
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <span id="val_approver_pos">..........................................</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../../../assets/js/core/config.js"></script>
+    <script src="../../../../assets/js/core/utils.js"></script>
+    <script src="r2.js"></script>
+</body>
+
+</html>

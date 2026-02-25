@@ -1,0 +1,135 @@
+<div class="fade-in pb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="text-primary fw-bold mb-0">
+                <i class="fa-solid fa-gauge-high me-2"></i>ภาพรวมงานติดตั้ง
+            </h4>
+            <small class="text-muted">ระบบประมาณการติดตั้งประปา</small>
+        </div>
+        <button class="btn btn-primary shadow-sm rounded-pill px-4 btn-hover-scale" onclick="Router.load('form')">
+            <i class="fa-solid fa-plus me-2"></i>เพิ่มงานใหม่
+        </button>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">ทั้งหมด</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0" id="stat-total">0</h3>
+                    <small class="text-muted">งานทั้งหมด</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-box bg-warning bg-opacity-10 text-warning rounded-circle">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill">รออนุมัติ</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0" id="stat-waiting">0</h3>
+                    <small class="text-muted">งานที่รอออกเลข</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle">
+                            <i class="fa-solid fa-file-circle-check"></i>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill">+ออกเลขแล้ว</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0" id="stat-issued">0</h3>
+                    <small class="text-muted">งานที่ออกเลขแล้ว</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-box bg-primary bg-opacity-25 text-primary rounded-circle">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <span class="badge bg-primary text-white rounded-pill">+รอปริ้น</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0" id="stat-waiting-print">0</h3>
+                    <small class="text-muted">งานที่รอปริ้น</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+        <div class="card-body p-2">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="position-relative">
+                        <span class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" id="dashSearchInput"
+                            class="form-control border-0 bg-transparent shadow-none ps-5"
+                            placeholder="ค้นหาชื่อ, เลขประมาณการ, รหัสงาน..." onkeyup="Dashboard.filter()">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-light rounded-circle text-muted" onclick="Dashboard.init(true)"
+                        title="รีเฟรช">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="jobsTable">
+                    <thead class="bg-light text-secondary">
+                        <tr class="text-uppercase small fw-bold">
+                            <th class="ps-4 py-3 cursor-pointer d-none d-md-table-cell" style="width: 25%;"
+                                onclick="Dashboard.sort('jobId')">
+                                รหัส / วันที่ <i class="fa-solid fa-sort ms-1" id="sort-jobId"></i>
+                            </th>
+                            <th style="width: 25%;" class="cursor-pointer" onclick="Dashboard.sort('customerName')">
+                                ลูกค้า / สถานที่ <i class="fa-solid fa-sort ms-1" id="sort-customerName"></i>
+                            </th>
+                            <th style="width: 20%;" class="cursor-pointer" onclick="Dashboard.sort('estimateNo')">
+                                เลขประมาณการ <i class="fa-solid fa-sort ms-1" id="sort-estimateNo"></i>
+                            </th>
+                            <th class="text-end cursor-pointer d-none d-md-table-cell" style="width: 15%;"
+                                onclick="Dashboard.sort('totalAmount')">
+                                ยอดรวม <i class="fa-solid fa-sort ms-1" id="sort-totalAmount"></i>
+                            </th>
+                            <th class="text-center pe-4" style="width: 15%;">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-top-0" id="jobsTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="text-center py-5 d-none">
+                <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" alt="No Data"
+                    style="width: 80px; opacity: 0.5;" class="mb-3">
+                <p class="text-muted">ไม่พบข้อมูลงานติดตั้ง</p>
+            </div>
+        </div>
+    </div>
+</div>

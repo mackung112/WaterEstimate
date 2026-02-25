@@ -1,0 +1,113 @@
+/* --- Form Page Styles --- */
+
+/* 1. Base Styles */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+}
+
+.card {
+    transition: var(--transition-default);
+    border: 1px solid rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Input Focus Effect (Water Theme) */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.25rem rgba(0, 92, 151, 0.15);
+}
+
+.form-control[readonly] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: default;
+    border-color: #e9ecef;
+}
+
+/* 2. Section 3: Map & Image Preview Box */
+.map-preview-box,
+.install-preview-box {
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6 !important;
+    transition: var(--transition-default);
+    position: relative;
+}
+
+.map-preview-box:has(img:not(.d-none)),
+.install-preview-box:has(img:not(.d-none)) {
+    border: 1px solid #dee2e6 !important;
+    background-color: #fff;
+}
+
+.install-preview-box:hover img {
+    transform: scale(1.05);
+}
+
+.install-preview-box img {
+    transition: transform 0.3s ease;
+}
+
+/* 3. Section 5: Personnel Cards */
+.personnel-card {
+    transition: var(--transition-fast);
+    border: 1px solid #e9ecef !important;
+}
+
+.personnel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md) !important;
+    background-color: #ffffff !important;
+    border-color: var(--color-primary) !important;
+}
+
+.signature-box {
+    border: 1px dashed #ced4da !important;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+/* 4. Items List Styling */
+#items-container h6 {
+    letter-spacing: 0.5px;
+}
+
+#items-container .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* 5. Mobile Sticky Footer */
+.fixed-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-header h5 {
+        font-size: 1.1rem;
+    }
+
+    .personnel-card {
+        min-height: auto !important;
+    }
+
+    .border-end-md {
+        border-right: 0 !important;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Desktop Only Styles */
+@media (min-width: 769px) {
+    .border-end-md {
+        border-right: 1px solid #dee2e6;
+    }
+}

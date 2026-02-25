@@ -1,0 +1,128 @@
+<link rel="stylesheet" href="pages/form/items/items.css">
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+    <div
+        class="card-header bg-white py-3 border-bottom-0 d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <h5 class="text-primary fw-bold mb-0">
+            <i class="fa-solid fa-screwdriver-wrench me-2"></i>4. รายการอุปกรณ์ติดตั้ง
+        </h5>
+
+        <div class="d-flex align-items-center bg-light rounded-pill p-1 border">
+            <span class="fw-bold text-muted small ms-3 me-2">ขนาดมิเตอร์:</span>
+            <div class="btn-group" role="group">
+                <input type="radio" class="btn-check" name="meterSize" id="size12" value="1/2" autocomplete="off"
+                    onchange="ItemsComponent.applyDefaultItems('1/2')">
+                <label class="btn btn-sm btn-outline-primary rounded-pill px-3" for="size12">1/2"</label>
+
+                <input type="radio" class="btn-check" name="meterSize" id="size34" value="3/4" autocomplete="off"
+                    onchange="ItemsComponent.applyDefaultItems('3/4')">
+                <label class="btn btn-sm btn-outline-primary rounded-pill px-3" for="size34">3/4"</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body pt-0">
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-light p-2 rounded-top border border-bottom-0">
+                <span class="fw-bold text-dark">1. ส่วนติดตั้งมาตรวัดน้ำ</span>
+                <span class="badge bg-white text-dark border" id="total-sec1">0.00</span>
+            </div>
+            <div class="border rounded-bottom bg-white p-2" id="list-sec1"></div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-light p-2 rounded-top border border-bottom-0">
+                <span class="fw-bold text-dark">2. ส่วนค่าติดตั้งเหมาจ่าย</span>
+                <span class="badge bg-white text-dark border" id="total-sec2">0.00</span>
+            </div>
+            <div class="border rounded-bottom bg-white p-2" id="list-sec2"></div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-secondary bg-opacity-10 p-3 rounded border">
+                <div>
+                    <span class="fw-bold text-dark">เหมาจ่าย</span>
+                </div>
+                <span class="fw-bold text-dark" id="lumpSumPrice">0.00</span>
+            </div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-info bg-opacity-10 p-2 rounded-top border border-info border-opacity-25 border-bottom-0">
+                <span class="fw-bold text-dark">3. ส่วนวางท่อภายใน</span>
+                <span class="badge bg-white text-dark border" id="total-sec3">0.00</span>
+            </div>
+            <div class="border border-bottom-0 bg-white p-2" id="list-sec3"></div>
+            <div class="bg-light border rounded-bottom p-2 small text-end text-muted">
+                <div class="d-flex justify-content-end gap-3">
+                    <span>วัสดุ: <b id="sum-sec3-mat">0</b></span>
+                    <span>+เผื่อ 10%: <b id="sum-sec3-buffer" class="text-danger">0</b></span>
+                    <span>ค่าแรง: <b id="sum-sec3-labor">0</b></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-info bg-opacity-10 p-2 rounded-top border border-info border-opacity-25 border-bottom-0">
+                <span class="fw-bold text-dark">4. ส่วนวางท่อภายนอก</span>
+                <span class="badge bg-white text-dark border" id="total-sec4">0.00</span>
+            </div>
+            <div class="border border-bottom-0 bg-white p-2" id="list-sec4"></div>
+            <div class="bg-light border rounded-bottom p-2 small text-end text-muted">
+                <div class="d-flex justify-content-end gap-3">
+                    <span>วัสดุ: <b id="sum-sec4-mat">0</b></span>
+                    <span>+เผื่อ 10%: <b id="sum-sec4-buffer" class="text-danger">0</b></span>
+                    <span>ค่าแรง: <b id="sum-sec4-labor">0</b></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div class="d-flex justify-content-between align-items-center bg-warning bg-opacity-10 p-3 rounded border">
+                <div>
+                    <span class="fw-bold text-dark">5. ค่าดำเนินการ FACTOR F=1.3642 X ผลรวมของ (ข้อ3+ข้อ4)</span>
+                </div>
+                <span class="fw-bold text-dark fs-5" id="total-sec5">0.00</span>
+            </div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-secondary bg-opacity-10 p-3 rounded border">
+                <div>
+                    <span class="fw-bold text-dark">6. ค่าสำรวจ 2% ของ (ข้อ3+ข้อ4)</span>
+                </div>
+                <span class="fw-bold text-dark fs-5" id="total-sec6">0.00</span>
+            </div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-light p-2 rounded-top border border-bottom-0">
+                <span class="fw-bold text-dark">7. ส่วนค่าธรรมเนียมประสานท่อ</span>
+                <span class="badge bg-white text-dark border" id="total-sec7">0.00</span>
+            </div>
+            <div class="border rounded-bottom bg-white p-2" id="list-sec7"></div>
+        </div>
+
+        <div class="section-block mb-3">
+            <div
+                class="d-flex justify-content-between align-items-center bg-light p-2 rounded-top border border-bottom-0">
+                <span class="fw-bold text-dark">8. เงินประกันมาตรวัดน้ำ</span>
+                <span class="badge bg-white text-dark border" id="total-sec8">0.00</span>
+            </div>
+            <div class="border rounded-bottom bg-white p-2" id="list-sec8"></div>
+        </div>
+
+    </div>
+
+    <div class="alert alert-primary d-flex justify-content-between align-items-center mb-0 shadow-sm rounded-bottom-4">
+        <span class="fw-bold fs-5">รวมเป็นเงินทั้งสิ้น</span>
+        <span class="fw-bold fs-3 text-primary" id="items-grand-total">0.00 บาท</span>
+    </div>
+</div>

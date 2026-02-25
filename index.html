@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaterEstimate - ระบบประมาณการติดตั้งประปา</title>
+
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- Dynamic Page Style -->
+    <link id="page-style" rel="stylesheet" href="">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-water-theme shadow-lg sticky-top py-2">
+        <div class="container">
+            <a class="brand-container" href="#" onclick="Router.load('dashboard'); return false;">
+                <div class="brand-icon">
+                    <img src="assets/images/logo.png" alt="OES Logo"
+                        style="height: 100%; width: auto; border-radius: 15px;">
+                </div>
+                <div class="brand-text">
+                    <span class="en">Online Estimation System</span>
+                    <span class="th">ระบบประมาณการออนไลน์</span>
+                </div>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="#"
+                            onclick="Router.load('dashboard'); return false;"><i class="fa-solid fa-chart-pie"></i>
+                            รายการรายงาน</a></li>
+                    <li class="nav-item"><a class="nav-link" id="nav-materials" href="#"
+                            onclick="Router.load('materials'); return false;"><i class="fa-solid fa-box-open"></i>
+                            คลังวัสดุ</a></li>
+                    <li class="nav-item"><a class="nav-link" id="nav-personnel" href="#"
+                            onclick="Router.load('personnel'); return false;"><i class="fa-solid fa-users"></i>
+                            จัดการบุคลากร</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="app-content" class="container py-4 fade-in"></div>
+
+    <div id="loading"
+        class="d-none position-fixed top-0 start-0 w-100 h-100 bg-white bg-opacity-80 d-flex flex-column justify-content-center align-items-center"
+        style="z-index: 2000;">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+        <p class="text-primary fw-bold animate-pulse">กำลังโหลดข้อมูล...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Core Scripts -->
+    <script src="assets/js/core/config.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/services/db_manager.js"></script>
+    <script src="assets/js/core/app.js"></script>
+
+    <!-- Shared/Dependency Scripts -->
+    <!-- These are required by Form page and possibly others -->
+    <script src="pages/form/items/items.js"></script>
+    <script src="pages/form/reports/report_manager.js"></script>
+
+    <!-- Note: Page-specific scripts (dashboard, form, etc.) are loaded dynamically by Router in app.js -->
+
+</body>
+
+</html>

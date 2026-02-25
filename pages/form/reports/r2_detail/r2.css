@@ -1,0 +1,381 @@
+/* --- ตั้งค่าหน้ากระดาษ A4 แนวตั้ง (Portrait) --- */
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+body {
+    background-color: #525659;
+    font-family: 'TH SarabunPSK', 'Sarabun', sans-serif;
+    padding: 20px;
+    font-size: 14pt;
+}
+
+.a4-page {
+    width: 210mm;
+    /* A4 Portrait */
+    min-height: 297mm;
+    max-height: auto;
+    margin: 0 auto;
+    background: white;
+    padding: 18mm 15mm 12mm 15mm;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    box-sizing: border-box;
+    font-size: 14pt;
+    line-height: 1.1;
+    overflow: visible;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- ส่วนหัว (Header) --- */
+.header-section {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.header-title {
+    font-weight: bold;
+    font-size: 14pt;
+    margin-bottom: 2px;
+}
+
+.header-row-2 {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 15px;
+    row-gap: 2px;
+    font-size: 14pt;
+    flex-wrap: wrap;
+}
+
+.header-row-3 {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 15px;
+    row-gap: 2px;
+    font-size: 14pt;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.info-data {
+    padding: 0 5px;
+    display: inline-block;
+}
+
+/* --- ตาราง (Table) --- */
+.estimate-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+    font-size: 14pt;
+}
+
+.estimate-table th,
+.estimate-table td {
+    border: 0.5px solid #000;
+    padding: 1px 3px;
+    vertical-align: top;
+}
+
+.estimate-table thead th {
+    text-align: center;
+    font-weight: bold;
+    background-color: #fff;
+    vertical-align: middle;
+    height: 25px;
+    border-bottom: 0.5px solid #000;
+}
+
+.col-seq {
+    width: 25px;
+    text-align: center;
+}
+
+.col-size {
+    width: 35px;
+    text-align: center;
+}
+
+.col-qty {
+    width: 25px;
+    text-align: center;
+}
+
+.col-unit {
+    width: 30px;
+    text-align: center;
+}
+
+.col-money {
+    width: 50px;
+    text-align: right;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.section-header td {
+    font-weight: bold;
+    background-color: #fcfcfc;
+}
+
+.subtotal-row td {
+    font-weight: bold;
+}
+
+.buffer-row td {
+    font-style: normal;
+    border: 0.5px solid #000;
+}
+
+.total-section-row td {
+    font-weight: bold;
+    border: 0.5px solid #000;
+    border-bottom: 0.5px solid #000;
+}
+
+.grand-total-row td {
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border: 0.5px solid #000;
+}
+
+.baht-text-row td {
+    text-align: center;
+    font-weight: bold;
+    font-style: normal;
+    padding: 3px;
+    background-color: #f0f0f0;
+    border: 0.5px solid #000;
+}
+
+/* --- ลายเซ็น (Signatures) --- */
+.signature-area {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    page-break-inside: avoid;
+    padding: 0 10px;
+}
+
+.sig-block {
+    text-align: center;
+    width: 48%;
+    position: relative;
+}
+
+/* สไตล์ตารางสำหรับลายเซ็น */
+.sig-layout-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.sig-layout-table td {
+    border: none !important;
+    /* ไม่มีเส้นขอบตาราง */
+    padding: 0 2px;
+    vertical-align: bottom;
+    white-space: nowrap;
+    font-size: 14pt;
+}
+
+.pad-right-5 {
+    padding-right: 5px;
+}
+
+.pad-left-5 {
+    padding-left: 5px;
+}
+
+.pad-top-5 {
+    padding-top: 5px;
+}
+
+/* กล่องลายเซ็น */
+.sig-box {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: -10px;
+    /* ดึงรูปลงมาชิดจุดไข่ปลา */
+}
+
+
+.sig-name {
+    padding-top: 0 !important;
+    vertical-align: top !important;
+    line-height: 1 !important;
+    position: relative;
+    top: -10px;
+    /* Pull it up closer to dots */
+}
+
+.sig-img {
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- ควบคุมการพิมพ์ --- */
+.no-print {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: auto;
+    /* Override left: 50% */
+    transform: none;
+    /* Override transform */
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    /* Force row */
+    align-items: center;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* 
+ * การตั้งค่าการพิมพ์ - บังคับให้ตารางพิมพ์ใน A4 ใบเดียว
+ * หากตารางมีรายการเยอะ ระบบจะย่อให้พอดีอัตโนมัติ
+ * หากต้องการปรับขนาด: เปลี่ยนค่า scale() (0.82 = 82% ของขนาดเดิม)
+ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    body {
+        background: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* ใช้ขนาดเดียวกับหน้าจอปกติ */
+    .a4-page {
+        width: 210mm;
+        height: 297mm;
+        max-height: auto;
+        box-shadow: none;
+        margin: 0 auto;
+        padding: 18mm 15mm 12mm 15mm;
+        /* เหมือนหน้าจอ */
+        overflow: visible;
+        page-break-after: always;
+        page-break-inside: avoid;
+        font-size: 14pt;
+        /* เหมือนหน้าจอ */
+        line-height: 1.1;
+        /* เหมือนหน้าจอ */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ลดขนาดส่วนหัว */
+    .header-section {
+        margin-bottom: 5px;
+    }
+
+    .header-title {
+        font-size: 14pt;
+        margin-bottom: 1px;
+    }
+
+    .header-row-2,
+    .header-row-3 {
+        font-size: 14pt;
+        column-gap: 15px;
+        row-gap: 2px;
+        margin-top: 1px;
+    }
+
+    /* ปรับตาราง */
+    .estimate-table {
+        margin-bottom: 5px;
+        font-size: 14pt;
+    }
+
+    .estimate-table th,
+    .estimate-table td {
+        padding: 1px 3px;
+        /* ลด padding ของเซลล์ */
+        font-size: 14pt;
+    }
+
+    .estimate-table thead th {
+        height: 20px;
+    }
+
+    /* ลดระยะห่างลายเซ็น */
+    .signature-area {
+        margin-top: auto;
+        padding: 0 10px;
+    }
+
+    .sig-box {
+        height: 50px;
+    }
+
+    .pad-top-5 {
+        padding-top: 2px;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* New Helper Classes for JS injected content */
+.bg-lump-sum {
+    background-color: #e8f5e9;
+}
+
+.text-left {
+    text-align: left;
+}

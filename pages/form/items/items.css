@@ -1,0 +1,25 @@
+.text-small-80 {
+    font-size: 0.8rem;
+}
+
+.text-small-75 {
+    font-size: 0.75rem;
+}
+
+.text-small-70 {
+    font-size: 0.7rem;
+}
+
+.qty-input-group {
+    width: 110px;
+}
+
+.search-results-dropdown {
+    z-index: 1050;
+    display: none;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Custom styling for section blocks if needed */
+/* .section-block { } */

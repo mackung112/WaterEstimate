@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ใบแจ้งราคา (R1)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="r1.css">
+</head>
+
+<body>
+
+    <div class="no-print" style="position: fixed; top: 10px; right: 10px; z-index: 1000; display: flex; gap: 10px;">
+        <button onclick="window.fixThaiLineBreaks && window.fixThaiLineBreaks()"
+            title="กด Shift+Enter เพื่อผ่าบรรทัด / Enter ขึ้นย่อหน้าใหม่"
+            class="btn btn-warning rounded-pill px-4 shadow text-dark fw-bold">✨ จัดคำไทยใหม่</button>
+        <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 shadow">🖨️ พิมพ์</button>
+    </div>
+
+    <div class="a4-page">
+
+        <div class="header-top">
+            <div class="header-center">
+                <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcReoiiXmA_jS0Xt2vechoe5fgnpTaUe9NQcUDE3w2qlq0wLe2JT"
+                    class="garuda-logo">
+            </div>
+
+            <div class="header-left" contenteditable="true">
+                ที่ มท 55410 – 21/...........
+            </div>
+
+            <div class="header-right" contenteditable="true">
+                <div>การประปาส่วนภูมิภาค</div>
+                <div>สาขาพระนครศรีอยุธยา(ชั้นพิเศษ)</div>
+                <div>118 ม.3 ต.คลองสวนพลู</div>
+                <div>อ.พระนครศรีอยุธยา อย.13000</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="date-section" contenteditable="true">
+                วันที่ <span class="data-val" id="val_date"></span>
+            </div>
+
+            <div class="subject-block">
+                <div class="subject-row">
+                    <div class="subject-label" contenteditable="true">เรื่อง</div>
+                    <div class="subject-value" contenteditable="true">แจ้งราคาค่าติดตั้งมาตรวัดน้ำ</div>
+                </div>
+                <div class="subject-row">
+                    <div class="subject-label" contenteditable="true">เรียน</div>
+                    <div class="subject-value data-val" id="val_customer" contenteditable="true"></div>
+                </div>
+                <div class="subject-row">
+                    <div class="subject-label" contenteditable="true">อ้างถึง</div>
+                    <div class="subject-value" contenteditable="true">
+                        แบบคำขอเลขที่ <span class="data-val" id="val_req_no"></span>
+                        ลงวันที่ <span class="data-val" id="val_req_date"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="paragraph" contenteditable="true">
+                ตามหนังสือแบบคำขอที่อ้างถึง ท่านแจ้งความประสงค์ขอทำการติดตั้งวางท่อประปาให้กับท่าน
+                <span class="data-val" id="val_address"></span> นั้น
+            </div>
+            <div class="paragraph" contenteditable="true">
+                การประปาส่วนภูมิภาคสาขาพระนครศรีอยุธยา(ชั้นพิเศษ) ขอเรียนว่าได้ดำเนินการสำรวจออกแบบและประมาณราคาแล้ว
+                มีค่าใช้จ่ายในการติดตั้งวางท่อประปา ดังนี้
+            </div>
+
+            <table class="cost-table">
+                <tr>
+                    <td class="col-item" contenteditable="true">1. ในส่วนติดตั้งมาตรวัดน้ำ</td>
+                    <td class="col-label" contenteditable="true">เป็นเงิน</td>
+                    <td class="col-amount data-val" id="val_cost_meter" contenteditable="true"></td>
+                    <td class="col-unit" contenteditable="true">บาท</td>
+                </tr>
+                <tr>
+                    <td class="col-item" contenteditable="true">2. ค่าเงินประกันการใช้มาตรวัดน้ำ</td>
+                    <td class="col-label" contenteditable="true">เป็นเงิน</td>
+                    <td class="col-amount data-val" id="val_cost_deposit" contenteditable="true"></td>
+                    <td class="col-unit" contenteditable="true">บาท</td>
+                </tr>
+                <tr>
+                    <td class="col-item text-right pr-20" contenteditable="true">
+                        รวมค่าใช้จ่าย</td>
+                    <td class="col-label" contenteditable="true">เป็นเงิน</td>
+                    <td class="col-amount data-val" id="val_total" contenteditable="true"></td>
+                    <td class="col-unit" contenteditable="true">บาท</td>
+                </tr>
+                <tr class="row-total-text">
+                    <td colspan="4" contenteditable="true">
+                        ( <span class="data-val" id="val_total_text"></span> )
+                    </td>
+                </tr>
+            </table>
+
+            <div class="paragraph" contenteditable="true">
+                ดังนั้น หากท่านประสงค์จะดำเนินการติดตั้งวางท่อประปาดังกล่าว ขอได้โปรดชำระเงินจำนวน
+                <span class="data-val" id="val_total_inline"></span> บาท
+                โดยเงินสดหรือตั๋วแลกเงินหรือแคชเชียร์เช็คสั่งจ่ายในนามการประปาส่วนภูมิภาคแล้วนำส่ง ณ
+                การประปาส่วนภูมิภาคสาขาพระนครศรีอยุธยา(ชั้นพิเศษ)
+                ราคาค่าใช้จ่ายที่แจ้งนี้มีกำหนดยืนราคา 60 วัน นับตั้งแต่วันที่ออกหนังสือฉบับนี้
+                และในการดำเนินการติดตั้งวางท่อประปาดังกล่าว
+                การประปาส่วนภูมิภาคขอสงวนสิทธิ์ ที่จะดำเนินการตามรูปแบบ วิธีการที่เห็นเหมาะสม
+                ซึ่งท่อประปาที่ได้วางไว้แล้วภายนอกมาตรวัดน้ำต้องตกเป็นทรัพย์สินของการประปาฯ
+                โดยผู้ขอติดตั้งประปา หรือ ผู้ขอใช้น้ำจะต้องปฏิบัติตามระเบียบ และข้อบังคับของ การประปาส่วนภูมิภาค
+                ทุกประการ
+            </div>
+
+            <!-- Split Paragraph for Distributed Alignment -->
+
+
+            <div class="paragraph" contenteditable="true">
+                อนึ่ง ค่าใช้จ่ายในการติดตั้งวางท่อประปาดังกล่าว ไม่รวมราคาค่าใช้จ่ายในการซ่อมถนนทางเท้า
+                ซึ่งจำเป็นต้องวางท่อ ผู้ใช้น้ำจะต้องเป็นผู้ดำเนินการขออนุญาตและเสียค่าซ่อมแซมให้กับเจ้าของที่ ที่วางท่อ
+                ให้เรียบร้อยก่อนการประปาฯ จึงจะดำเนินการติดตั้งวางท่อประปาให้ต่อไปและในการขออนุญาตต่อเจ้าของพื้นที่
+                ให้ผู้ใช้น้ำติดต่อกับ การประปาส่วนภูมิภาคสาขาพระนครศรีอยุธยา (ชั้นพิเศษ) เพื่อรับเอกสารประกอบการ
+                ขออนุญาตต่อไปด้วย
+            </div>
+
+            <div class="paragraph" contenteditable="true">
+                จึงเรียนมาเพื่อโปรดทราบ
+            </div>
+
+            <div class="signature-section">
+                <div class="mb-30" contenteditable="true">ขอแสดงความนับถือ</div>
+
+                <div class="signature-space" contenteditable="true"></div>
+
+                <div contenteditable="true">( <span class="data-val"
+                        id="val_approver">........................................</span> )</div>
+                <div class="data-val" id="val_position" contenteditable="true">
+                    ผู้จัดการการประปาส่วนภูมิภาค</div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <img src="footer.png" class="footer-image" alt="footer logo" onerror="this.style.display='none'">
+        </div>
+
+    </div>
+
+    <script src="../../../../assets/js/core/config.js"></script>
+    <script src="../../../../assets/js/core/utils.js"></script>
+    <script src="r1.js"></script>
+</body>
+
+</html>

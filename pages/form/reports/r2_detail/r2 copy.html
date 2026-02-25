@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>รายละเอียดประมาณการ (R2)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ตั้งค่าหน้ากระดาษ A4 แนวตั้ง (Portrait) --- */
+        @page { 
+            size: A4 portrait; 
+            margin: 0; 
+        }
+        
+        @font-face {
+            font-family: 'TH SarabunPSK';
+            src: local('TH SarabunPSK'), local('THSarabunPSK'), url('https://cdn.jsdelivr.net/gh/lazywasabi/thai-web-fonts@master/fonts/THSarabunNew/THSarabunNew.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'TH SarabunPSK';
+            src: local('TH SarabunPSK Bold'), local('THSarabunPSK-Bold'), url('https://cdn.jsdelivr.net/gh/lazywasabi/thai-web-fonts@master/fonts/THSarabunNew/THSarabunNew-Bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        body {
+            background-color: #525659;
+            font-family: 'TH SarabunPSK', 'Sarabun', sans-serif;
+            padding: 20px;
+        }
+
+        .a4-page {
+            width: 210mm; /* A4 Portrait */
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            padding: 25mm 20mm 15mm 20mm; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            position: relative;
+            box-sizing: border-box;
+            font-size: 12pt; 
+            line-height: 1.0; 
+            color: #000;
+        }
+
+        /* --- ส่วนหัว (Header) --- */
+        .header-section {
+            text-align: center;
+            margin-bottom: 5px; 
+        }
+        
+        .header-title {
+            font-weight: bold;
+            font-size: 14pt; 
+            margin-bottom: 2px;
+        }
+
+        .header-row-2 {
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+            font-size: 12pt; 
+            flex-wrap: wrap; 
+        }
+
+        .header-row-3 {
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+            font-size: 12pt; 
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+
+        .info-data {
+            padding: 0 5px;
+            display: inline-block;
+        }
+
+        /* --- ตาราง (Table) --- */
+        .estimate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px; 
+            font-size: 12pt; 
+        }
+        
+        .estimate-table th, .estimate-table td {
+            border: 0.5px solid #000;
+            padding: 1px 3px; 
+            vertical-align: top;
+        }
+        
+        .estimate-table thead th {
+            text-align: center;
+            font-weight: bold;
+            background-color: #fff;
+            vertical-align: middle;
+            height: 25px; 
+            border-bottom: 0.5px solid #000;
+        }
+
+        .col-seq    { width: 30px; text-align: center; } 
+        .col-item   { } 
+        .col-size   { width: 40px; text-align: center; }
+        .col-qty    { width: 30px; text-align: center; }
+        .col-unit   { width: 35px; text-align: center; }
+        .col-money  { width: 60px; text-align: right; }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        .fw-bold { font-weight: bold; }
+        .section-header td { 
+            font-weight: bold;
+            background-color: #fcfcfc; 
+        }
+        
+        .subtotal-row td { font-weight: bold; }
+        
+        .buffer-row td { 
+            font-style: normal; 
+            border: 0.5px solid #000;
+        } 
+        
+        .total-section-row td { 
+            font-weight: bold; 
+            border: 0.5px solid #000;
+            border-bottom: 0.5px solid #000;
+        }
+
+        .grand-total-row td {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            border: 0.5px solid #000;
+        }
+        .baht-text-row td {
+            text-align: center;
+            font-weight: bold;
+            font-style: normal; 
+            padding: 3px; 
+            background-color: #f0f0f0;
+            border: 0.5px solid #000;
+        }
+
+        /* --- ลายเซ็น (Signatures) --- */
+        .signature-area {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            page-break-inside: avoid;
+            padding: 0 10px;
+        }
+        .sig-block {
+            text-align: center;
+            width: 48%;
+            position: relative;
+        }
+        
+        /* สไตล์ตารางสำหรับลายเซ็น */
+        .sig-layout-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+        }
+        .sig-layout-table td {
+            border: none !important; /* ไม่มีเส้นขอบตาราง */
+            padding: 0 2px;
+            vertical-align: bottom;
+            white-space: nowrap;
+        }
+        
+        /* กล่องลายเซ็น */
+        .sig-box {
+            height: 70px; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: -5px; /* ดึงรูปลงมาชิดจุดไข่ปลา */
+        }
+        
+        .sig-img {
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- ควบคุมการพิมพ์ --- */
+        .no-print {
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .a4-page { 
+                box-shadow: none; 
+                margin: 0; 
+                width: 100%; 
+                height: auto; 
+                page-break-after: always; 
+                padding: 25mm 20mm 15mm 20mm; 
+            }
+            .no-print { display: none !important; }
+            @page { size: portrait; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print d-flex gap-2">
+        <button onclick="window.print()" class="btn btn-primary rounded-pill px-4 fw-bold">🖨️ พิมพ์ / บันทึก PDF</button>
+        <button onclick="window.close()" class="btn btn-secondary rounded-pill px-4">ปิดหน้าต่าง</button>
+    </div>
+
+    <div class="a4-page">
+        
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="header-title">รายละเอียดประมาณการติดตั้งและวางท่อประปา</div>
+            
+            <div class="header-row-2">
+                <span>การประปาส่วนภูมิภาคสาขาพระนครศรีอยุธยา (ชั้นพิเศษ)</span>
+                <span>ประมาณการเลขที่ <span id="val_est_no" class="info-data"></span></span>
+                <span>ผู้ใช้น้ำเลขที่ <span id="val_user_no" class="info-data"></span></span>
+            </div>
+
+            <div class="header-row-3">
+                <span>ชื่อ <span id="val_customer_name" class="info-data"></span></span>
+                <span>บ้านเลขที่ <span id="val_house_no" class="info-data"></span></span>
+                <span>หมู่ที่ <span id="val_moo" class="info-data"></span></span>
+                <span>ตำบล <span id="val_tambon" class="info-data"></span></span>
+                <span>อำเภอ <span id="val_amphoe" class="info-data"></span></span>
+                <span>จังหวัด <span id="val_province" class="info-data"></span></span>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <table class="estimate-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="col-seq">ลำดับที่</th>
+                    <th rowspan="2" class="col-item">รายการ</th>
+                    <th rowspan="2" class="col-size">ขนาด</th>
+                    <th rowspan="2" class="col-qty">จำนวน</th>
+                    <th rowspan="2" class="col-unit">หน่วย<br>นับ</th>
+                    <th colspan="2">ค่าวัสดุอุปกรณ์</th>
+                    <th colspan="2">ค่าแรง</th>
+                    <th rowspan="2" class="col-money">รวมเงิน</th>
+                </tr>
+                <tr>
+                    <th class="col-money">ต่อหน่วย</th>
+                    <th class="col-money">เป็นเงิน</th>
+                    <th class="col-money">ต่อหน่วย</th>
+                    <th class="col-money">เป็นเงิน</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr><td colspan="10" class="text-center py-5">กำลังโหลดข้อมูล...</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Signatures -->
+        <div class="signature-area">
+            <!-- Block 1: Surveyor -->
+            <div class="sig-block">
+                <table class="sig-layout-table">
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <!-- กล่องลายเซ็น (อยู่เหนือกึ่งกลางจุดไข่ปลา) -->
+                            <div id="sig_surveyor_container" class="sig-box"></div> 
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="padding-right: 5px;">ลงชื่อ</td>
+                        <!-- ใส่จุดไข่ปลาคืนตามที่ต้องการ -->
+                        <td align="center">..........................................................</td>
+                        <td align="left" style="padding-left: 5px;">ช่างสำรวจ/ประมาณการ</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center" style="padding-top: 5px;">
+                            ( <span id="val_surveyor_name">..........................................</span> )
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <span id="val_surveyor_pos">..........................................</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Block 2: Approver -->
+            <div class="sig-block">
+                <table class="sig-layout-table">
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <!-- กล่องลายเซ็น (อยู่เหนือกึ่งกลางจุดไข่ปลา) -->
+                            <div id="sig_approver_container" class="sig-box"></div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="padding-right: 5px;">ลงชื่อ</td>
+                        <!-- ใส่จุดไข่ปลาคืนตามที่ต้องการ -->
+                        <td align="center">..........................................................</td>
+                        <td align="left" style="padding-left: 5px;">ผู้ตรวจประมาณการ</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center" style="padding-top: 5px;">
+                            ( <span id="val_approver_name">..........................................</span> )
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center">
+                            <span id="val_approver_pos">..........................................</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION ---
+        const API_URL = "https://script.google.com/macros/s/AKfycbyVKDvoAPgopek8-3Am8z8P5z90cubD7bJ2E_QRLBO8ptpnv2g08LHadq4hz00Pgi97Lg/exec"; 
+
+        // --- 2. MAIN LOGIC ---
+        window.onload = async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('id');
+
+            if (!jobId) {
+                alert("ไม่พบรหัสงาน (Job ID) ใน URL");
+                return;
+            }
+
+            try {
+                // ดึงข้อมูลจาก Google Sheets ผ่าน GAS
+                const response = await fetch(API_URL + "?action=getData");
+                const res = await response.json();
+                
+                if (res.status !== 'success') throw new Error(res.message);
+
+                const job = res.jobs.find(j => String(j.jobId) === String(jobId));
+                if (!job) throw new Error("ไม่พบข้อมูลงาน ID: " + jobId);
+
+                // เริ่มวาดหน้าจอ
+                renderHeader(job);
+                renderTable(job);
+                renderSignatures(job, res.personnel);
+
+            } catch (error) {
+                console.error(error);
+                alert("เกิดข้อผิดพลาด: " + error.message);
+                document.getElementById('table-body').innerHTML = `<tr><td colspan="10" class="text-center text-danger">โหลดข้อมูลไม่สำเร็จ: ${error.message}</td></tr>`;
+            }
+        };
+
+        // --- 3. HELPER FUNCTIONS ---
+        const fmt = (n) => (parseFloat(n) || 0).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        const fmtInt = (n) => (parseFloat(n) || 0).toLocaleString('th-TH');
+        
+        function ThaiNumberToText(Number) {
+            const NumberWord = ["ศูนย์", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
+            const UnitWord = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
+            Number = parseFloat(Number).toFixed(2);
+            if (Number == "0.00") return "ศูนย์บาทถ้วน";
+            let Numbers = Number.split(".");
+            let Integer = Numbers[0];
+            let Decimal = Numbers[1];
+            let Text = "";
+            if (parseInt(Integer) > 0) {
+                let Len = Integer.length;
+                for (let i = 0; i < Len; i++) {
+                    let N = Integer.charAt(i);
+                    if (N != 0) {
+                        if (i == (Len - 1) && N == 1 && Len > 1) { Text += "เอ็ด"; }
+                        else if (i == (Len - 2) && N == 2) { Text += "ยี่"; }
+                        else if (i == (Len - 2) && N == 1) { /* สิบ */ }
+                        else { Text += NumberWord[N]; }
+                        Text += UnitWord[Len - i - 1];
+                    }
+                }
+                Text += "บาท";
+            }
+            if (parseInt(Decimal) > 0) {
+                let Len = Decimal.length;
+                for (let i = 0; i < Len; i++) {
+                    let N = Decimal.charAt(i);
+                    if (N != 0) {
+                        if (i == (Len - 1) && N == 1 && Len > 1) { Text += "เอ็ด"; }
+                        else if (i == (Len - 2) && N == 2) { Text += "ยี่"; }
+                        else if (i == (Len - 2) && N == 1) { /* สิบ */ }
+                        else { Text += NumberWord[N]; }
+                        Text += (i==0) ? "สิบ" : "";
+                    }
+                }
+                Text += "สตางค์";
+            } else { Text += "ถ้วน"; }
+            return Text;
+        }
+
+        function getItemTotal(item) {
+            let total = parseFloat(item.totalPrice || item.Total_Price || 0);
+            if (total === 0) {
+                const q = parseFloat(item.qty || item.Quantity || 0);
+                const m = parseFloat(item.unitPriceMat || item.Unit_Price_Mat || 0);
+                const l = parseFloat(item.unitPriceLabor || item.Unit_Price_Labor || 0);
+                if (q > 0 && (m > 0 || l > 0)) {
+                    total = q * (m + l);
+                }
+            }
+            return total;
+        }
+
+        function renderHeader(job) {
+            document.getElementById('val_est_no').innerText = job.estimateNo || "-";
+            document.getElementById('val_user_no').innerText = job.userNumber || "-";
+            
+            document.getElementById('val_customer_name').innerText = job.customerName || "-";
+            document.getElementById('val_house_no').innerText = job.houseNo || "-";
+            document.getElementById('val_moo').innerText = job.moo || "-";
+            document.getElementById('val_tambon').innerText = job.tambon || "-";
+            document.getElementById('val_amphoe').innerText = job.amphoe || "-";
+            document.getElementById('val_province').innerText = job.province || "-";
+        }
+
+        function renderTable(job) {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            const sections = { 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[], 8:[] };
+
+            (job.items || []).forEach(item => {
+                const rawSec = String(item.section || item.Section || '').toLowerCase().replace(/\s/g, '');
+                let secNum = 0;
+
+                if (rawSec === 'sec5' || rawSec === '5' || rawSec.includes('factor')) secNum = 5;
+                else if (rawSec === 'sec6' || rawSec === '6' || rawSec.includes('survey')) secNum = 6;
+                else if (rawSec === 'sec7' || rawSec === '7' || rawSec.includes('fee')) secNum = 7;
+                else if (rawSec === 'sec8' || rawSec === '8' || rawSec.includes('deposit')) secNum = 8;
+                else if (rawSec === 'sec1' || rawSec === '1') secNum = 1;
+                else if (rawSec === 'sec2' || rawSec === '2') secNum = 2;
+                else if (rawSec === 'sec3' || rawSec === '3') secNum = 3;
+                else if (rawSec === 'sec4' || rawSec === '4') secNum = 4;
+                
+                if (secNum === 0) {
+                    const match = rawSec.match(/(\d+)/); 
+                    if (match) {
+                        const n = parseInt(match[0]);
+                        if (n >= 1 && n <= 8) secNum = n;
+                    }
+                }
+                
+                if (secNum > 0) {
+                    sections[secNum].push(item);
+                }
+            });
+
+            const renderSectionBlock = (sectionNum, sectionTitle, items, showBuffer) => {
+                // เพิ่ม fw-bold ให้หัวข้อหลักตามข้อ 3
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="section-header">
+                        <td class="text-center fw-bold">${sectionNum}.</td>
+                        <td colspan="9" class="fw-bold">${sectionTitle}</td>
+                    </tr>
+                `);
+
+                let sumMat = 0;
+                let sumLabor = 0;
+                let sumTotal = 0;
+
+                if (items.length === 0) {
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td></td>
+                            <td colspan="9" class="text-center">ไม่มี</td>
+                        </tr>
+                    `);
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr class="total-section-row">
+                            <td></td>
+                            <td colspan="4" class="text-center">รวมข้อ ${sectionNum}</td>
+                            <td colspan="5" class="text-right">-</td>
+                        </tr>
+                    `);
+                    return 0;
+                }
+
+                items.forEach((item, index) => {
+                    const qty = parseFloat(item.qty || item.Quantity || 0);
+                    const matUnit = parseFloat(item.unitPriceMat || item.Unit_Price_Mat || 0);
+                    const laborUnit = parseFloat(item.unitPriceLabor || item.Unit_Price_Labor || 0);
+                    
+                    const matTotal = qty * matUnit;
+                    const laborTotal = qty * laborUnit;
+                    const lineTotal = matTotal + laborTotal;
+
+                    sumMat += matTotal;
+                    sumLabor += laborTotal;
+                    sumTotal += lineTotal;
+
+                    let size = item.size || "-"; 
+                    
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td class="col-seq"></td>
+                            <td class="col-item">${item.name || item.Item_Name}</td>
+                            <td class="col-size">${size}</td>
+                            <td class="col-qty">${fmtInt(qty)}</td>
+                            <td class="col-unit">${item.unit || item.Unit}</td>
+                            <td class="col-money">${fmt(matUnit)}</td>
+                            <td class="col-money">${fmt(matTotal)}</td>
+                            <td class="col-money">${laborUnit > 0 ? fmt(laborUnit) : '-'}</td>
+                            <td class="col-money">${laborTotal > 0 ? fmt(laborTotal) : '-'}</td>
+                            <td class="col-money">${fmt(lineTotal)}</td>
+                        </tr>
+                    `);
+                });
+
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="subtotal-row">
+                        <td></td>
+                        <td colspan="4" class="text-center">รวม</td>
+                        <td></td>
+                        <td class="col-money">${fmt(sumMat)}</td>
+                        <td></td>
+                        <td class="col-money">${fmt(sumLabor)}</td>
+                        <td></td>
+                    </tr>
+                `);
+
+                let bufferVal = 0;
+                if (showBuffer) {
+                    if(String(sectionNum) === "1" || String(sectionNum) === "2") {
+                        bufferVal = 0;
+                    } else {
+                        bufferVal = sumMat * 0.10;
+                    }
+                    
+                    // ปรับ style ให้มีเส้นตารางตามข้อ 2
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr class="buffer-row">
+                            <td></td>
+                            <td colspan="4" class="text-center">เผื่อขาด 10 % (เฉพาะค่าวัสดุ)</td>
+                            <td></td>
+                            <td class="col-money">${bufferVal > 0 ? fmt(bufferVal) : '-'}</td>
+                            <td class="col-money"></td>
+                            <td class="col-money"></td>
+                            <td class="col-money"></td>
+                        </tr>
+                    `);
+                }
+
+                const sectionGrandTotal = sumTotal + bufferVal;
+
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="total-section-row">
+                        <td></td>
+                        <td colspan="4" class="text-center">รวมข้อ ${sectionNum}</td>
+                        <td></td>
+                        <td class="col-money">${fmt(sumMat + bufferVal)}</td>
+                        <td></td>
+                        <td class="col-money">${fmt(sumLabor)}</td>
+                        <td class="col-money">${fmt(sectionGrandTotal)}</td>
+                    </tr>
+                `);
+
+                return sectionGrandTotal;
+            };
+
+            const totalSec1 = renderSectionBlock(1, "ส่วนติดตั้งมาตรวัดน้ำ", sections[1], true);
+            const totalSec2 = renderSectionBlock(2, "ส่วนค่าติดตั้งเหมาจ่าย", sections[2], true);
+            const totalSec3 = renderSectionBlock(3, "ส่วนวางท่อภายใน", sections[3], true);
+            const totalSec4 = renderSectionBlock(4, "ส่วนวางท่อภายนอก", sections[4], true);
+
+            const sum34 = totalSec3 + totalSec4;
+
+            let valFactorF = 0;
+            if (sections[5].length > 0) {
+                sections[5].forEach(i => valFactorF += getItemTotal(i));
+            } else {
+                 if(sum34 > 0) valFactorF = sum34 * 1.3642; 
+            }
+            
+            // เพิ่ม fw-bold ให้หัวข้อหลักตามข้อ 3
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td class="text-center fw-bold">5.</td>
+                    <td colspan="8" class="fw-bold">ค่าดำเนินการ FACTOR F=1.3642 X ผลรวมของ(ข้อ 3+4)</td>
+                    <td class="col-money">${fmt(valFactorF)}</td>
+                </tr>
+            `);
+
+            let valSurvey = 0;
+            if (sections[6].length > 0) {
+                sections[6].forEach(i => valSurvey += getItemTotal(i));
+            } else {
+                 if(sum34 > 0) valSurvey = sum34 * 0.02; 
+            }
+
+            // เพิ่ม fw-bold ให้หัวข้อหลักตามข้อ 3
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td class="text-center fw-bold">6.</td>
+                    <td colspan="8" class="fw-bold">ค่าสำรวจ 2 % ของ(ข้อ 3+4)</td>
+                    <td class="col-money">${valSurvey > 0 ? fmt(valSurvey) : '-'}</td>
+                </tr>
+            `);
+
+            let totalSec7 = 0;
+            let qtySec7 = 0;
+            sections[7].forEach(i => {
+                totalSec7 += getItemTotal(i);
+                qtySec7 += (parseFloat(i.qty || i.Quantity || 0));
+            });
+            // แก้ไขข้อ 7 ให้มีช่องครบ
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td class="text-center fw-bold">7.</td>
+                    <td class="fw-bold">ค่าธรรมเนียมประสานท่อ</td>
+                    <td class="text-center">-</td>
+                    <td class="text-center">${qtySec7 > 0 ? fmtInt(qtySec7) : '-'}</td>
+                    <td class="text-center">จุด</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right col-money">${totalSec7 > 0 ? fmt(totalSec7) : '-'}</td>
+                </tr>
+            `);
+
+            let totalSec8 = 0;
+            let depositLabel = "เงินประกันการใช้มาตรวัดน้ำ";
+            let depositSize = "";
+            let depositQty = "";
+            let depositUnit = "";
+            
+            if (sections[8].length > 0) {
+                sections[8].forEach(i => totalSec8 += getItemTotal(i));
+                const item = sections[8][0]; 
+                depositSize = item.size || '1/2"';
+                depositQty = fmtInt(parseFloat(item.qty || item.Quantity || 1));
+                depositUnit = item.unit || 'เครื่อง';
+            }
+
+            // แก้ไขข้อ 8 ให้มีช่องครบ
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td class="text-center fw-bold">8.</td>
+                    <td class="fw-bold">${depositLabel}</td>
+                    <td class="text-center">${depositSize}</td>
+                    <td class="text-center">${depositQty}</td>
+                    <td class="text-center">${depositUnit}</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="text-right">-</td>
+                    <td class="col-money text-right">${fmt(totalSec8)}</td>
+                </tr>
+            `);
+
+            const grandTotal = totalSec1 + totalSec2 + valFactorF + valSurvey + totalSec7 + totalSec8;
+
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr class="grand-total-row">
+                    <td></td>
+                    <td colspan="8" style="text-align: left;">ค่าใช้จ่ายทั้งหมด รวมเงิน (ข้อ 1+2+5+6+7+8)</td>
+                    <td class="col-money">${fmt(grandTotal)}</td>
+                </tr>
+                <tr class="baht-text-row">
+                    <td colspan="10">( ${ThaiNumberToText(grandTotal)} )</td>
+                </tr>
+            `);
+        }
+
+        function renderSignatures(job, personnel) {
+            const findPerson = (name) => personnel.find(p => p.Name === name) || {};
+            
+            const surveyor = findPerson(job.surveyorName);
+            document.getElementById('val_surveyor_name').innerText = job.surveyorName || "..........................................";
+            document.getElementById('val_surveyor_pos').innerText = surveyor.Position || "..........................................";
+            
+            if(surveyor.Signature_URL) {
+                const img = document.createElement('img');
+                img.src = surveyor.Signature_URL;
+                img.className = 'sig-img';
+                document.getElementById('sig_surveyor_container').appendChild(img);
+            }
+
+            const inspector = findPerson(job.inspectorName); 
+            document.getElementById('val_approver_name').innerText = job.inspectorName || "..........................................";
+            document.getElementById('val_approver_pos').innerText = inspector.Position || "..........................................";
+
+            if(inspector.Signature_URL) {
+                const img = document.createElement('img');
+                img.src = inspector.Signature_URL;
+                img.className = 'sig-img';
+                document.getElementById('sig_approver_container').appendChild(img);
+            }
+        }
+
+    </script>
+</body>
+</html>

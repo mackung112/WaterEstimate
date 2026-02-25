@@ -1,0 +1,295 @@
+<div class="fade-in pb-5">
+    <div class="d-flex flex-column flex-xl-row justify-content-between align-items-center mb-4 gap-3">
+        <div class="text-center text-xl-start">
+            <h4 class="text-primary fw-bold mb-0">
+                <i class="fa-solid fa-file-pen me-2"></i>บันทึกข้อมูลงานติดตั้ง
+            </h4>
+            <small class="text-muted" id="form-mode-label">กำลังโหลด...</small>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <div id="printButtonGroup" class="d-none d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary rounded-pill px-4 shadow-sm"
+                    onclick="Form.printAllReports()">
+                    <i class="fa-solid fa-file-export me-1"></i>ออกรายงาน
+                </button>
+                <div class="vr mx-1"></div>
+            </div>
+
+            <!-- Print Status Section -->
+            <div id="printStatusSection"
+                class="d-none btn btn-outline-secondary rounded-pill px-3 shadow-sm d-flex align-items-center gap-2">
+                <i class="fa-solid fa-print"></i>
+                <span id="printDateDisplay" class="small"></span>
+                <button type="button" class="btn btn-link text-danger p-0 ms-1" onclick="Form.resetPrintStatus()"
+                    title="รีเซ็ตสถานะการปริ้น">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+
+            <div id="printStatusDivider" class="vr mx-1 d-none"></div>
+
+            <button class="btn btn-outline-secondary rounded-pill px-4" onclick="Router.load('dashboard')">
+                <i class="fa-solid fa-arrow-left me-2"></i>ย้อนกลับ
+            </button>
+        </div>
+    </div>
+
+    <form id="jobForm" novalidate>
+        <input type="hidden" name="Status" value="Pending">
+        <input type="hidden" name="Timestamp">
+
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="text-primary fw-bold mb-0"><i class="fa-solid fa-file-invoice me-2"></i>1. ข้อมูลเอกสาร</h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row g-3">
+                    <div class="col-12 col-md-3">
+                        <label class="form-label text-muted small fw-bold">รหัสงาน (Job ID)</label>
+                        <input type="text" name="Job_ID" class="form-control bg-light fw-bold text-primary" readonly
+                            placeholder="Auto...">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="form-label text-muted small fw-bold">เลขที่คำขอ (Request No.)</label>
+                        <input type="text" name="Request_No" class="form-control" placeholder="เช่น RQ67/001">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="form-label text-muted small fw-bold">เลขที่ประมาณการ</label>
+                        <input type="text" name="Estimate_No" class="form-control" placeholder="เช่น WN67/001"
+                            onkeyup="Form.updatePrintButtonsVisibility()"
+                            onchange="Form.updatePrintButtonsVisibility()">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="form-label text-muted small fw-bold">วันที่ขอรับบริการ</label>
+                        <input type="date" name="Request_Date" class="form-control text-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="text-success fw-bold mb-0"><i class="fa-solid fa-address-card me-2"></i>2. ข้อมูลลูกค้า</h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row g-3">
+                    <div class="col-12 col-md-8">
+                        <label class="form-label text-muted small fw-bold">ชื่อ-สกุล ผู้ขอรับบริการ</label>
+                        <input type="text" name="Customer_Name" class="form-control">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="form-label text-muted small fw-bold">เลขที่ผู้ใช้น้ำ</label>
+                        <input type="text" name="User_Number" class="form-control">
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label text-muted small fw-bold">สถานที่ติดตั้ง</label>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-2">
+                                <input type="text" name="House_No" class="form-control" placeholder="บ้านเลขที่">
+                            </div>
+                            <div class="col-6 col-md-2">
+                                <input type="text" name="Moo" class="form-control" placeholder="หมู่">
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <input type="text" name="Tambon" class="form-control" placeholder="ตำบล">
+                            </div>
+                            <div class="col-6 col-md-2">
+                                <input type="text" name="Amphoe" class="form-control" placeholder="อำเภอ">
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <input type="text" name="Province" class="form-control" value="พระนครศรีอยุธยา"
+                                    placeholder="จังหวัด">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="text-danger fw-bold mb-0"><i class="fa-solid fa-map-location-dot me-2"></i>3. แผนที่และรูปแบบ
+                </h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row g-4">
+
+                    <!-- 1. GPS Map -->
+                    <div class="col-12 col-md-4 border-end-md">
+                        <label class="form-label fw-bold text-danger">พิกัดสังเขป (GPS)</label>
+                        <div class="input-group mb-2">
+                            <input type="text" name="Map_URL" id="mapUrlInput" class="form-control"
+                                placeholder="พิกัด (เช่น 14.35,100.55)" onchange="Form.previewMap(this.value)">
+                            <button class="btn btn-outline-secondary" type="button" onclick="Form.getCurrentLocation()">
+                                <i class="fa-solid fa-crosshairs"></i>
+                            </button>
+                        </div>
+
+                        <div class="map-preview-box rounded-3 border bg-light overflow-hidden position-relative"
+                            style="height: 280px;">
+                            <div id="leafletMap" style="width: 100%; height: 100%; z-index: 1;"></div>
+                            <div id="mapPlaceholder"
+                                class="text-center text-muted opacity-50 position-absolute top-50 start-50 translate-middle">
+                                <i class="fa-solid fa-map-pin fa-2x mb-2"></i><br>คลิกปักหมุดบนแผนที่
+                            </div>
+                        </div>
+                        <small class="text-muted mt-1 d-block"><i
+                                class="fa-solid fa-info-circle me-1"></i>คลิกบนแผนที่เพื่อปักหมุดตำแหน่ง</small>
+                    </div>
+
+                    <!-- 2. GIS Image (NEW) -->
+                    <!-- 2. GIS Image (NEW) -->
+                    <div class="col-12 col-md-4 border-end-md">
+                        <label class="form-label fw-bold text-primary mb-2">ภาพจาก GIS</label>
+
+                        <!-- File Input -->
+                        <input type="file" id="gisFileInput" class="form-control mb-2" accept="image/*">
+
+                        <!-- Hidden URL Input -->
+                        <input type="hidden" name="Gis_Image_URL" id="gisImgUrl">
+
+                        <div class="gis-preview-box rounded-3 border bg-light d-flex align-items-center justify-content-center overflow-hidden position-relative"
+                            style="height: 280px;">
+
+                            <!-- Loading Overlay -->
+                            <div id="gisLoadingOverlay"
+                                class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none d-flex flex-column align-items-center justify-content-center"
+                                style="z-index: 10;">
+                                <span class="spinner-border text-primary mb-2"></span>
+                                <small class="text-primary fw-bold">กำลังอัปโหลด...</small>
+                            </div>
+
+                            <img id="gisPreviewImg" class="d-none h-100 w-100 object-fit-contain">
+                            <div id="gisPlaceholder" class="text-center text-muted opacity-50">
+                                <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2"></i><br>เลือกไฟล์รูปภาพ
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Installation Pattern -->
+                    <div class="col-12 col-md-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label fw-bold text-success mb-0">รูปแบบการติดตั้ง</label>
+                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3"
+                                data-bs-toggle="modal" data-bs-target="#imageSelectModal">เลือกรูป</button>
+                        </div>
+
+                        <input type="text" name="Image_URL" id="installImgUrl" class="form-control mb-2 text-muted"
+                            placeholder="URL รูปแบบ..." onchange="Form.previewInstallImage(this.value)">
+
+                        <div class="install-preview-box rounded-3 border bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                            style="height: 280px;">
+                            <img id="installPreviewImg" class="d-none h-100 w-100 object-fit-contain">
+                            <div id="installPlaceholder" class="text-center text-muted opacity-50">
+                                <i class="fa-regular fa-image fa-2x mb-2"></i><br>ตัวอย่างรูป
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="items-component-container"></div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-5">
+            <div class="card-header bg-white py-3 border-bottom-0">
+                <h5 class="text-info fw-bold mb-0 text-dark"><i class="fa-solid fa-signature me-2 text-info"></i>5.
+                    การอนุมัติและบุคลากร</h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="row g-4">
+
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 bg-light rounded-3 h-100 border text-center">
+                            <span class="badge bg-primary mb-3">ผู้สำรวจ</span>
+                            <div id="sig-surveyor"
+                                class="bg-white border rounded mb-2 d-flex align-items-center justify-content-center"
+                                style="height: 60px;"></div>
+
+                            <input type="text" name="Surveyor_Name" id="sel-surveyor" list="list-surveyor"
+                                class="form-control form-control-sm text-center mb-1"
+                                placeholder="เลือก หรือ พิมพ์ชื่อ..." onchange="Form.updateSignature('surveyor')"
+                                autocomplete="off">
+                            <datalist id="list-surveyor"></datalist>
+
+                            <input type="text" name="Surveyor_Pos" id="pos-surveyor"
+                                class="form-control form-control-sm text-center border-0 bg-transparent"
+                                placeholder="ตำแหน่ง">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 bg-light rounded-3 h-100 border text-center">
+                            <span class="badge bg-success mb-3">ผู้ตรวจสอบ</span>
+                            <div id="sig-inspector"
+                                class="bg-white border rounded mb-2 d-flex align-items-center justify-content-center"
+                                style="height: 60px;"></div>
+
+                            <input type="text" name="Inspector_Name" id="sel-inspector" list="list-inspector"
+                                class="form-control form-control-sm text-center mb-1"
+                                placeholder="เลือก หรือ พิมพ์ชื่อ..." onchange="Form.updateSignature('inspector')"
+                                autocomplete="off">
+                            <datalist id="list-inspector"></datalist>
+
+                            <input type="text" name="Inspector_Pos" id="pos-inspector"
+                                class="form-control form-control-sm text-center border-0 bg-transparent"
+                                placeholder="ตำแหน่ง">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 bg-light rounded-3 h-100 border text-center">
+                            <span class="badge bg-warning text-dark mb-3">ผู้อนุมัติ</span>
+                            <div id="sig-approver"
+                                class="bg-white border rounded mb-2 d-flex align-items-center justify-content-center"
+                                style="height: 60px;"></div>
+
+                            <input type="text" name="Approver_Name" id="sel-approver" list="list-approver"
+                                class="form-control form-control-sm text-center mb-1"
+                                placeholder="เลือก หรือ พิมพ์ชื่อ..." onchange="Form.updateSignature('approver')"
+                                autocomplete="off">
+                            <datalist id="list-approver"></datalist>
+
+                            <input type="text" name="Approver_Pos" id="pos-approver"
+                                class="form-control form-control-sm text-center border-0 bg-transparent"
+                                placeholder="ตำแหน่ง">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-bottom bg-white border-top p-3 shadow-lg d-md-none" style="z-index: 1020;">
+            <button type="button" class="btn btn-primary w-100 rounded-pill py-2 shadow" onclick="Form.submit()">
+                <i class="fa-solid fa-save me-2"></i> บันทึก
+            </button>
+        </div>
+
+        <div class="d-none d-md-flex justify-content-end align-items-center gap-3 mb-5 pb-5">
+            <button type="button" class="btn btn-light px-4 rounded-pill"
+                onclick="Router.load('dashboard')">ยกเลิก</button>
+            <button type="button" class="btn btn-primary px-5 rounded-pill shadow btn-hover-scale"
+                onclick="Form.submit()">
+                <i class="fa-solid fa-save me-2"></i> บันทึกข้อมูล
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="imageSelectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title fw-bold">เลือกรูปแบบการติดตั้ง</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="list-group list-group-flush" id="installImageList"></div>
+            </div>
+        </div>
+    </div>
+</div>

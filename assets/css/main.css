@@ -1,0 +1,264 @@
+/* main.css — Global Design System */
+
+/* === Design Tokens (ตัวแปรกลางสำหรับทุกหน้า) === */
+:root {
+    --color-primary: #005c97;
+    --color-primary-dark: #363795;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #0dcaf0;
+    --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 50px;
+    --transition-fast: all 0.2s ease;
+    --transition-default: all 0.3s ease;
+    --transition-bounce: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- 1. Global Settings --- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- 2. Theme Colors (ธีมการประปา) --- */
+.bg-water-theme {
+    background: var(--gradient-primary);
+}
+
+/* --- 3. Navbar Brand (โลโก้และชื่อ) --- */
+.brand-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: var(--transition-default);
+}
+
+.brand-container:hover {
+    color: #e0e0e0;
+    opacity: 0.9;
+}
+
+.brand-icon {
+    height: 50px;
+    width: auto;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.brand-text .en {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.brand-text .th {
+    font-weight: 300;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+/* --- 4. Navbar Links (เมนู) --- */
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: var(--transition-default);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* --- 5. Responsive (มือถือ) --- */
+@media (max-width: 991px) {
+    .brand-text .en {
+        font-size: 1.1rem;
+    }
+
+    .brand-text .th {
+        font-size: 0.75rem;
+    }
+
+    .navbar-nav {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-nav .nav-link {
+        margin-bottom: 5px;
+        padding-left: 0;
+    }
+}
+
+/* --- 6. Shared Animations (ใช้ร่วมกันทุกหน้า) --- */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+
+/* Table Row Animation (ใช้ร่วมกันทุกตาราง) */
+.table-row-anim {
+    animation: slideInUp 0.3s ease forwards;
+    opacity: 0;
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skeleton Loading (ใช้ร่วมกันทุกตาราง) */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.skeleton-text {
+    height: 16px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+}
+
+.skeleton-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Button Micro-interactions (ใช้ร่วมกันทุกหน้า) */
+.btn-hover-scale {
+    transition: var(--transition-bounce);
+}
+.btn-hover-scale:active { transform: scale(0.95); }
+.btn-hover-scale:hover { transform: translateY(-2px); }
+
+/* Glass Card (ใช้ร่วมกันหลายหน้า) */
+.glass-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+    transition: var(--transition-default);
+}
+
+/* Loading Overlay Backdrop */
+#loading {
+    backdrop-filter: blur(4px);
+}
+
+/* --- 7. Toast Notification (Glassmorphism) --- */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1060;
+    pointer-events: none;
+}
+
+.toast-message {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #333;
+    padding: 12px 20px;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+    font-weight: 500;
+    pointer-events: auto;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toast-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-message.success .toast-icon {
+    color: var(--color-success);
+    background: #e8f5e9;
+}
+
+.toast-message.error .toast-icon {
+    color: var(--color-danger);
+    background: #fbe9eb;
+}
+
+.toast-message.info .toast-icon {
+    color: var(--color-info);
+    background: #e0faff;
+}
+
+.toast-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}

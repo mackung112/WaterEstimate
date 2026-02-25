@@ -1,0 +1,375 @@
+/* Font & General */
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    background-color: #525659;
+    padding: 20px;
+    font-family: 'TH SarabunPSK', 'Sarabun', sans-serif;
+    font-size: 12pt;
+    line-height: 1.1;
+}
+
+h3 {
+    font-size: 22pt;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+}
+
+h4 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+}
+
+h5 {
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* A4 Page Container */
+.a4-page {
+    width: 210mm;
+    min-height: 297mm;
+    max-height: 297mm;
+    margin: 0 auto;
+    background: white;
+    padding: 12mm 15mm;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: #000;
+    font-size: 12pt;
+    line-height: 1.15;
+    overflow: hidden;
+}
+
+/* 1. Header */
+.header-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 8px;
+    height: 65px;
+}
+
+.logo-box {
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.pwa-logo {
+    width: 2cm;
+    height: auto;
+}
+
+.header-text {
+    text-align: center;
+    width: 100%;
+    padding-top: 0;
+}
+
+/* 2. Info Section */
+.info-section {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 16pt;
+    line-height: 1.3;
+}
+
+.info-row {
+    margin-bottom: 2px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+}
+
+.val-box {
+    border-bottom: 1px dotted #000;
+    padding: 0 5px;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Double Horizontal Line */
+.double-line {
+    border: none;
+    border-top: 4px double black;
+    height: 4px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+/* 3. Map Section */
+.map-container-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.map-box {
+    width: 100%;
+    max-width: 18cm;
+    height: 11cm;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.map-img,
+.map-frame {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: none;
+    z-index: 0;
+}
+
+/* Map QR Code Overlay */
+.map-qr-overlay {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.map-qr-overlay img {
+    display: block;
+}
+
+/* 4. Remarks */
+.remarks-section {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+/* 5. Installation Image */
+.install-img-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: auto;
+    flex-grow: 1;
+    align-items: center;
+    min-height: 2.5cm;
+    flex-direction: column;
+}
+
+.install-img {
+    max-width: 100%;
+    max-height: 6cm;
+    object-fit: contain;
+    border: 1px solid #ccc;
+}
+
+/* 6. Footer Signatures */
+.footer-signatures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 5px;
+    page-break-inside: avoid;
+    font-size: 14pt;
+}
+
+.sig-box {
+    width: 45%;
+    text-align: center;
+}
+
+.sig-box p {
+    margin: 3px 0;
+    line-height: 1.2;
+}
+
+.sig-img-box {
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.sig-img {
+    max-height: 100%;
+    max-width: 80%;
+}
+
+.position-text {
+    margin-top: 2px;
+    font-size: 14pt;
+}
+
+.sig-name-row {
+    margin: 2px 0;
+}
+
+/* Utilities */
+.d-none {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.ms-2 {
+    margin-left: 0.5rem;
+}
+
+.me-2 {
+    margin-right: 0.5rem;
+}
+
+/* 
+ * การตั้งค่าการพิมพ์ - บังคับให้เนื้อหาพิมพ์ใน A4 ใบเดียว
+ * รองรับทั้งกรณีที่มีแผนที่และรูปภาพขนาดใหญ่
+ * หากต้องการปรับขนาด: เปลี่ยนค่า scale() (0.80 = 80% ของขนาดเดิม)
+ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* ใช้ขนาดเดียวกับหน้าจอปกติ */
+    .a4-page {
+        width: 210mm;
+        height: 297mm;
+        max-height: 297mm;
+        margin: 0;
+        padding: 12mm 15mm;
+        /* เหมือนหน้าจอ */
+        box-shadow: none;
+        border: none;
+        overflow: hidden;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        font-size: 12pt;
+        /* เหมือนหน้าจอ */
+        line-height: 1.15;
+        /* เหมือนหน้าจอ */
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+.double-line {
+    margin: 3px 0;
+    height: 3px;
+}
+
+/* ปรับขนาดแผนที่ */
+.map-container-wrapper {
+    margin-bottom: 3px;
+}
+
+.map-box {
+    height: 10cm;
+    /* ลดความสูงแผนที่ */
+    margin-bottom: 3px;
+    max-width: 17cm;
+}
+
+/* ลดขนาด QR Code */
+.map-qr-overlay {
+    bottom: 3px;
+    right: 3px;
+    padding: 3px;
+}
+
+/* ลดระยะห่างหมายเหตุ */
+.remarks-section {
+    margin-bottom: 3px;
+}
+
+/* ปรับขนาดรูปภาพติดตั้ง */
+.install-img-container {
+    margin-bottom: 5px;
+    min-height: 1.5cm;
+}
+
+.install-img {
+    max-height: 8cm;
+    /* ลดความสูงรูปภาพ */
+    border: 1px solid #ccc;
+}
+
+/* ลดขนาดลายเซ็น */
+.footer-signatures {
+    margin-top: 3px;
+    padding-top: 3px;
+    font-size: 13pt;
+}
+
+
+.sig-img-box {
+    height: 45px;
+    margin-bottom: 1px;
+}
+
+.sig-box p {
+    margin: 1px 0;
+    font-size: 13pt;
+}
+
+.position-text {
+    margin-top: 1px;
+    font-size: 13pt;
+}
+
+
+.no-print {
+    display: none !important;
+}
+
+/* แสดงแผนที่ iframe */
+.map-frame {
+    display: block;
+}

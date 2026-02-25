@@ -1,0 +1,349 @@
+/* --- 1. ตั้งค่าฟอนต์ --- */
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap');
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TH SarabunPSK';
+    src: url('../../../../assets/fonts/THSarabun BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+body {
+    background-color: #525659;
+    padding: 20px;
+    font-family: 'TH SarabunPSK', 'Sarabun', sans-serif;
+    font-weight: normal;
+    font-size: 16pt;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+.a4-page {
+    width: 210mm;
+    min-height: 297mm;
+    max-height: 297mm;
+    margin: 0 auto;
+    background: white;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    padding: 10mm 20mm 20mm 20mm;
+    box-sizing: border-box;
+    font-size: 16pt;
+    line-height: 1.2;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.footer-line {
+    font-size: 16pt;
+    font-weight: normal;
+    margin: 1px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    position: relative;
+    min-height: 2.2cm;
+}
+
+.header-left {
+    width: 30%;
+    position: relative;
+    z-index: 2;
+    text-align: left;
+}
+
+.header-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+
+.garuda-logo {
+    width: 1.5cm;
+    height: auto;
+}
+
+.header-right {
+    width: 45%;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+    padding-left: 2cm;
+}
+
+.header-right div {
+    font-size: 16pt !important;
+    font-weight: normal !important;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+.date-section {
+    text-align: center;
+    padding-left: 15%;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.date-section.paragraph {
+    text-align: justify;
+    text-indent: 2cm;
+    margin-bottom: 5px;
+    line-height: 1.3;
+}
+
+.subject-block {
+    margin-bottom: 8px;
+}
+
+.subject-row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.subject-label {
+    width: 1.2cm;
+    min-width: 1.2cm;
+    font-weight: normal;
+}
+
+.subject-value {
+    flex: 1;
+}
+
+.footer-logo {
+    height: 1.2cm;
+    width: auto;
+    margin-bottom: 3px;
+}
+
+.paragraph {
+    text-indent: 2.5cm;
+    text-align: justify;
+    margin-bottom: 6px;
+}
+
+.split-paragraph-top {
+    text-align-last: justify;
+    margin-bottom: 0 !important;
+}
+
+.split-paragraph-top {
+    text-align-last: justify;
+    margin-bottom: 0 !important;
+}
+
+.split-paragraph-bottom {
+    text-indent: 0 !important;
+    margin-top: 0 !important;
+}
+
+.cost-table {
+    width: calc(100% - 2.5cm);
+    margin-left: 2.5cm;
+    margin-bottom: 8px;
+    border-collapse: collapse;
+}
+
+.cost-table td {
+    padding: 1px 0;
+    vertical-align: bottom;
+}
+
+.col-item {
+    text-align: left;
+}
+
+.col-label {
+    text-align: right;
+    white-space: nowrap;
+    padding-right: 15px;
+}
+
+.col-amount {
+    text-align: right;
+    width: 20%;
+    border-bottom: 1px dotted #ccc;
+}
+
+.col-unit {
+    text-align: right;
+    width: 10%;
+}
+
+.row-total-text td {
+    text-align: right;
+    padding-top: 5px;
+}
+
+.data-val {
+    color: #000;
+}
+
+.signature-section {
+    margin-top: 15px;
+    text-align: center;
+    padding-left: 20%;
+}
+
+.signature-space {
+    height: 50px;
+}
+
+.footer-section {
+    margin-top: 10px;
+    border-top: none;
+    padding-top: 0;
+    text-align: center;
+}
+
+.footer-image {
+    max-width: 100%;
+    height: 1.5cm;
+    display: inline-block;
+}
+
+[contenteditable="true"] {
+    outline: none;
+    cursor: text;
+}
+
+[contenteditable="true"]:hover {
+    background-color: rgba(255, 235, 59, 0.15);
+    border-radius: 2px;
+}
+
+[contenteditable="true"]:focus {
+    background-color: rgba(255, 235, 59, 0.3);
+}
+
+/* --- ควบคุมการพิมพ์ --- */
+.no-print {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: auto;
+    /* Override left: 50% */
+    transform: none;
+    /* Override transform */
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    /* Force row */
+    align-items: center;
+    background: transparent;
+    /* Remove background if unwanted, or keep for legibility */
+    padding: 0;
+    box-shadow: none;
+}
+
+/* Utilities */
+.text-right {
+    text-align: right;
+}
+
+.pr-20 {
+    padding-right: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 10px;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+/* 
+ * การตั้งค่าการพิมพ์ - บังคับให้เนื้อหาทั้งหมดพิมพ์ใน A4 ใบเดียว
+ * หากต้องการปรับขนาด: เปลี่ยนค่า scale() (0.85 = 85% ของขนาดเดิม)
+ * ค่าที่แนะนำ: 0.80-0.95 (เล็กกว่า = เนื้อหาเล็กลง, ใหญ่กว่า = เนื้อหาใหญ่ขึ้น)
+ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    body {
+        padding: 0;
+        background: none;
+        margin: 0;
+    }
+
+    /* ใช้ขนาดเดียวกับหน้าจอปกติ */
+    .a4-page {
+        width: 210mm;
+        height: 297mm;
+        max-height: 297mm;
+        margin: 0;
+        padding: 10mm 20mm 20mm 20mm;
+        /* เหมือนหน้าจอ */
+        box-shadow: none;
+        border: none;
+        overflow: hidden;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        font-size: 16pt;
+        /* เหมือนหน้าจอ */
+        line-height: 1.2;
+        /* เหมือนหน้าจอ */
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+.footer-section {
+    margin-top: 5px;
+}
+
+.footer-image {
+    height: 1.2cm;
+}
+
+.no-print {
+    display: none !important;
+}
+
+[contenteditable="true"]:hover,
+[contenteditable="true"]:focus {
+    background-color: transparent;
+}
