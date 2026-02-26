@@ -1,18 +1,11 @@
 // ============================================
 // 1. CONFIGURATION
 // ============================================
-// 🚨 [สำคัญ] URL Web App ของคุณ
-const API_URL = CONFIG.API_URL;
 
 // ============================================
 // 2. MAIN LOGIC
 // ============================================
 window.onload = async function () {
-    // ตรวจสอบ URL
-    if (API_URL.includes("example-your-script-id")) {
-        alert("⚠️ แจ้งเตือน: URL Google Apps Script ไม่ถูกต้อง");
-    }
-
     const urlParams = new URLSearchParams(window.location.search);
     const jobId = urlParams.get('id');
 
@@ -24,7 +17,7 @@ window.onload = async function () {
     document.title = "ประมาณการ " + jobId;
 
     try {
-        // 🔥 NEW: ตรวจสอบ Cache ก่อน
+        // ตรวจสอบ Cache ก่อน
         const cached = sessionStorage.getItem('REPORT_CACHE');
         let res;
 
@@ -32,10 +25,8 @@ window.onload = async function () {
             console.log('✅ Loading from cache...');
             res = JSON.parse(cached);
         } else {
-            console.log('📡 Fetching from server...');
-            // ดึงข้อมูลจาก Google Sheets ผ่าน GAS
-            const response = await fetch(API_URL + "?action=getData");
-            res = await response.json();
+            console.log('📡 Fetching from Supabase...');
+            res = await DBManager.getDatabase();
 
             if (res.status !== 'success') throw new Error(res.message);
         }

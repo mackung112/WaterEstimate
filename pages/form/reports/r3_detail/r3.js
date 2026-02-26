@@ -1,7 +1,6 @@
 // ============================================
 // 1. CONFIGURATION
 // ============================================
-const API_URL = CONFIG.API_URL;
 
 window.onload = async function () {
     // 1. ตรวจสอบ URL
@@ -16,7 +15,7 @@ window.onload = async function () {
     document.title = "ผังการติดตั้ง " + jobId;
 
     try {
-        // 2. 🔥 NEW: ตรวจสอบ Cache ก่อน
+        // 2. ตรวจสอบ Cache ก่อน
         const cached = sessionStorage.getItem('REPORT_CACHE');
         let res;
 
@@ -24,10 +23,8 @@ window.onload = async function () {
             console.log('✅ Loading from cache...');
             res = JSON.parse(cached);
         } else {
-            console.log('📡 Fetching from server...');
-            // ดึงข้อมูล
-            const response = await fetch(API_URL + "?action=getData");
-            res = await response.json();
+            console.log('📡 Fetching from Supabase...');
+            res = await DBManager.getDatabase();
 
             if (res.status !== 'success') throw new Error(res.message);
         }
@@ -135,16 +132,7 @@ function renderReport(job, personnel) {
         // Option A: Show GIS Image
         if (mapPlace) mapPlace.classList.add('d-none');
         if (mapImg) {
-            let displayUrl = gisVal;
-            // [FIX] Convert Drive URL to reliable direct link (lh3)
-            if (displayUrl.includes('drive.google.com') && (displayUrl.includes('id=') || displayUrl.includes('/d/'))) {
-                try {
-                    const id = displayUrl.split('id=')[1] || displayUrl.split('/d/')[1].split('/')[0];
-                    if (id) displayUrl = `https://lh3.googleusercontent.com/d/${id}=w1000`;
-                } catch (e) { console.error("URL Conversion Error", e); }
-            }
-
-            mapImg.src = displayUrl;
+            mapImg.src = gisVal;
             mapImg.classList.remove('d-none');
 
             mapImg.onerror = () => {

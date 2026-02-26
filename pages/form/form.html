@@ -117,7 +117,7 @@
                 <div class="row g-4">
 
                     <!-- 1. GPS Map -->
-                    <div class="col-12 col-md-4 border-end-md">
+                    <div class="col-12 col-md-4 border-end-md d-flex flex-column">
                         <label class="form-label fw-bold text-danger">พิกัดสังเขป (GPS)</label>
                         <div class="input-group mb-2">
                             <input type="text" name="Map_URL" id="mapUrlInput" class="form-control"
@@ -127,7 +127,7 @@
                             </button>
                         </div>
 
-                        <div class="map-preview-box rounded-3 border bg-light overflow-hidden position-relative"
+                        <div class="map-preview-box rounded-3 border bg-light overflow-hidden position-relative mt-auto"
                             style="height: 280px;">
                             <div id="leafletMap" style="width: 100%; height: 100%; z-index: 1;"></div>
                             <div id="mapPlaceholder"
@@ -135,41 +135,43 @@
                                 <i class="fa-solid fa-map-pin fa-2x mb-2"></i><br>คลิกปักหมุดบนแผนที่
                             </div>
                         </div>
-                        <small class="text-muted mt-1 d-block"><i
-                                class="fa-solid fa-info-circle me-1"></i>คลิกบนแผนที่เพื่อปักหมุดตำแหน่ง</small>
+
                     </div>
 
-                    <!-- 2. GIS Image (NEW) -->
-                    <!-- 2. GIS Image (NEW) -->
-                    <div class="col-12 col-md-4 border-end-md">
+                    <!-- 2. GIS Image (Cloudinary) -->
+                    <div class="col-12 col-md-4 border-end-md d-flex flex-column">
                         <label class="form-label fw-bold text-primary mb-2">ภาพจาก GIS</label>
 
-                        <!-- File Input -->
-                        <input type="file" id="gisFileInput" class="form-control mb-2" accept="image/*">
+                        <!-- File Input (ซ่อนไว้ ใช้ Drag & Drop หรือคลิกที่กรอบแทน) -->
+                        <input type="file" id="gisFileInput" class="d-none" accept="image/*">
 
                         <!-- Hidden URL Input -->
                         <input type="hidden" name="Gis_Image_URL" id="gisImgUrl">
 
-                        <div class="gis-preview-box rounded-3 border bg-light d-flex align-items-center justify-content-center overflow-hidden position-relative"
-                            style="height: 280px;">
+                        <div class="gis-preview-box rounded-3 border border-2 border-dashed bg-light d-flex align-items-center justify-content-center overflow-hidden position-relative mt-auto"
+                            style="height: 280px; transition: all 0.2s ease;">
 
                             <!-- Loading Overlay -->
                             <div id="gisLoadingOverlay"
                                 class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none d-flex flex-column align-items-center justify-content-center"
                                 style="z-index: 10;">
                                 <span class="spinner-border text-primary mb-2"></span>
-                                <small class="text-primary fw-bold">กำลังอัปโหลด...</small>
+                                <small class="text-primary fw-bold">กำลังอัปโหลดไปยัง Cloud...</small>
                             </div>
 
                             <img id="gisPreviewImg" class="d-none h-100 w-100 object-fit-contain">
-                            <div id="gisPlaceholder" class="text-center text-muted opacity-50">
-                                <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2"></i><br>เลือกไฟล์รูปภาพ
+                            <div id="gisPlaceholder" class="text-center text-muted px-3">
+                                <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2 text-primary opacity-75"></i>
+                                <div class="fw-bold small">คลิกหรือลากไฟล์มาวาง</div>
+                                <div class="small opacity-75 mt-1">JPG, PNG, WebP (สูงสุด 10MB)</div>
+                                <div class="small opacity-50 mt-1"><i
+                                        class="fa-solid fa-compress me-1"></i>ระบบบีบอัดเป็น WebP อัตโนมัติ</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 3. Installation Pattern -->
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-4 d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <label class="form-label fw-bold text-success mb-0">รูปแบบการติดตั้ง</label>
                             <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3"
@@ -179,7 +181,7 @@
                         <input type="text" name="Image_URL" id="installImgUrl" class="form-control mb-2 text-muted"
                             placeholder="URL รูปแบบ..." onchange="Form.previewInstallImage(this.value)">
 
-                        <div class="install-preview-box rounded-3 border bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                        <div class="install-preview-box rounded-3 border bg-light d-flex align-items-center justify-content-center overflow-hidden mt-auto"
                             style="height: 280px;">
                             <img id="installPreviewImg" class="d-none h-100 w-100 object-fit-contain">
                             <div id="installPlaceholder" class="text-center text-muted opacity-50">

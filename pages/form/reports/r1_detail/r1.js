@@ -1,16 +1,9 @@
 // ============================================
 // 1. ตั้งค่า (Configuration)
 // ============================================
-// URL Web App (ที่คุณส่งมาล่าสุด)
-const API_URL = CONFIG.API_URL;
 
 window.onload = async function () {
-    // 1. ตรวจสอบว่าใส่ URL ถูกต้องหรือไม่
-    if (API_URL.includes("example-your-script-id")) {
-        alert("⚠️ แจ้งเตือน:\nURL ของ Google Apps Script ยังไม่ถูกต้อง");
-    }
-
-    // 2. ดึง ID จาก URL
+    // 1. ดึง ID จาก URL
     const urlParams = new URLSearchParams(window.location.search);
     const jobId = urlParams.get('id');
 
@@ -19,12 +12,12 @@ window.onload = async function () {
         return;
     }
 
-    // 3. แสดงสถานะกำลังโหลด
+    // 2. แสดงสถานะกำลังโหลด
     document.body.style.opacity = '0.5';
     document.title = "ใบแจ้งราคา " + jobId;
 
     try {
-        // 4. 🔥 NEW: ตรวจสอบ Cache ก่อน
+        // 3. ตรวจสอบ Cache ก่อน
         const cached = sessionStorage.getItem('REPORT_CACHE');
         let res;
 
@@ -32,13 +25,8 @@ window.onload = async function () {
             console.log('✅ Loading from cache...');
             res = JSON.parse(cached);
         } else {
-            console.log('📡 Fetching from server...');
-            // 5. ดึงข้อมูลจากฐานข้อมูล (Google Sheets)
-            const response = await fetch(API_URL + "?action=getData", { method: 'GET' });
-
-            if (!response.ok) throw new Error("การเชื่อมต่อกับ Server ขัดข้อง (Status: " + response.status + ")");
-
-            res = await response.json();
+            console.log('📡 Fetching from Supabase...');
+            res = await DBManager.getDatabase();
 
             if (res.status !== 'success') throw new Error(res.message);
         }
