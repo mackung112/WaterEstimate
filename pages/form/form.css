@@ -1,6 +1,6 @@
-/* --- Form Page Styles --- */
+/* --- หน้าฟอร์มบันทึกงาน --- */
 
-/* 1. Base Styles */
+/* 1. สไตล์พื้นฐาน */
 .form-label {
     font-weight: 600;
     color: #495057;
@@ -11,13 +11,31 @@
 .card {
     transition: var(--transition-default);
     border: 1px solid rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden;
 }
 
-/* Input Focus Effect (Water Theme) */
+/* Gradient accent ที่ขอบบนของ card-header */
+.card-header {
+    position: relative;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    opacity: 0.3;
+}
+
+/* Input Focus Effect (ธีมการประปา) */
 .form-control:focus,
 .form-select:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 0.25rem rgba(0, 92, 151, 0.15);
+    box-shadow: 0 0 0 0.2rem rgba(0, 92, 151, 0.12), 0 2px 8px rgba(0, 92, 151, 0.08);
+    transition: var(--transition-default);
 }
 
 .form-control[readonly] {
@@ -27,7 +45,7 @@
     border-color: #e9ecef;
 }
 
-/* 2. Section 3: Map & Image Preview Box */
+/* 2. Section 3: แผนที่และรูปตัวอย่าง */
 .map-preview-box,
 .install-preview-box {
     background-color: #f8f9fa;
@@ -50,7 +68,7 @@
     transition: transform 0.3s ease;
 }
 
-/* 3. Section 5: Personnel Cards */
+/* 3. Section 5: การ์ดบุคลากร */
 .personnel-card {
     transition: var(--transition-fast);
     border: 1px solid #e9ecef !important;
@@ -69,7 +87,7 @@
     overflow: hidden;
 }
 
-/* 4. Items List Styling */
+/* 4. สไตล์รายการวัสดุ */
 #items-container h6 {
     letter-spacing: 0.5px;
 }
@@ -81,13 +99,13 @@
     padding-right: 0;
 }
 
-/* 5. Mobile Sticky Footer */
+/* 5. ปุ่มด้านล่างมือถือ */
 .fixed-bottom {
     padding-bottom: env(safe-area-inset-bottom);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Responsive Adjustments */
+/* รองรับมือถือ */
 @media (max-width: 768px) {
     .card-header h5 {
         font-size: 1.1rem;
@@ -105,7 +123,7 @@
     }
 }
 
-/* Desktop Only Styles */
+/* สไตล์เฉพาะ Desktop */
 @media (min-width: 769px) {
     .border-end-md {
         border-right: 1px solid #dee2e6;

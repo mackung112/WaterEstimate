@@ -1,6 +1,6 @@
-/* --- Materials Page Styles --- */
+/* --- หน้าจัดการวัสดุ --- */
 
-/* 1. Badge สีตามประเภทวัสดุ */
+/* 1. Badge สีตามประเภท */
 .cat-badge {
     padding: 6px 12px;
     border-radius: 6px;
@@ -15,6 +15,11 @@
     justify-content: center;
     transition: var(--transition-fast);
     white-space: nowrap;
+}
+
+.cat-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* สีเฉพาะกลุ่ม */
@@ -49,7 +54,7 @@
     letter-spacing: -0.5px;
 }
 
-/* 3. Search Input Styling */
+/* 3. ช่องค้นหา */
 .search-input-group {
     position: relative;
     transition: var(--transition-default);
@@ -64,16 +69,18 @@
     box-shadow: none;
 }
 
-/* 4. Table Hover styling */
+/* 4. สไตล์ Hover ตาราง */
 #materialsTable tbody tr {
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
 }
 
 #materialsTable tbody tr:hover {
     background-color: #f8faff;
+    border-left-color: var(--color-primary);
 }
 
-/* --- Mobile Responsiveness --- */
+/* --- รองรับมือถือ --- */
 @media (max-width: 768px) {
 
     #materialsTable td,

@@ -1,14 +1,35 @@
-/* --- Dashboard Theme (Water Style) --- */
+/* --- หน้า Dashboard (ธีมการประปา) --- */
 
-/* 1. Stat Cards */
+/* 1. การ์ดสถิติ */
 .stat-card {
     border-radius: var(--radius-md);
-    transition: var(--transition-fast);
+    transition: var(--transition-default);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, transparent 50%, rgba(0, 92, 151, 0.03) 100%);
+    border-radius: 0 0 0 100%;
+    pointer-events: none;
+    transition: var(--transition-default);
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-md) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.stat-card:hover::after {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, transparent 40%, rgba(0, 92, 151, 0.06) 100%);
 }
 
 .icon-box {
@@ -18,6 +39,11 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    transition: var(--transition-default);
+}
+
+.stat-card:hover .icon-box {
+    transform: scale(1.1);
 }
 
 .stat-icon {
@@ -25,11 +51,22 @@
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* 2. Table Styling */
+/* 2. ตารางรายการงาน */
 #jobsTable thead th {
     font-size: 0.85rem;
     letter-spacing: 0.5px;
     color: #6c757d;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+#jobsTable thead th:hover {
+    color: var(--color-primary);
+}
+
+#jobsTable thead th:last-child {
+    cursor: default;
 }
 
 #jobsTable tbody td {
@@ -37,7 +74,15 @@
     font-size: 0.95rem;
 }
 
-/* 3. Responsive */
+#jobsTable tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#jobsTable tbody tr:hover {
+    background-color: #f8faff;
+}
+
+/* 3. รองรับมือถือ */
 @media (max-width: 768px) {
 
     .stat-card h2,

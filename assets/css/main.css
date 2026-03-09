@@ -1,6 +1,6 @@
-/* main.css — Global Design System */
+/* main.css — ระบบออกแบบกลาง (Global Design System) */
 
-/* === Design Tokens (ตัวแปรกลางสำหรับทุกหน้า) === */
+/* === ตัวแปรกลางสำหรับทุกหน้า (Design Tokens) === */
 :root {
     --color-primary: #005c97;
     --color-primary-dark: #363795;
@@ -19,9 +19,12 @@
     --transition-fast: all 0.2s ease;
     --transition-default: all 0.3s ease;
     --transition-bounce: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-blur: 12px;
 }
 
-/* --- 1. Global Settings --- */
+/* --- 1. ตั้งค่าทั่วไป --- */
 html {
     scroll-behavior: smooth;
 }
@@ -33,12 +36,26 @@ body {
     padding: 0;
 }
 
-/* --- 2. Theme Colors (ธีมการประปา) --- */
+/* --- 2. ธีมสีการประปา --- */
 .bg-water-theme {
     background: var(--gradient-primary);
+    position: relative;
+    overflow: hidden;
 }
 
-/* --- 3. Navbar Brand (โลโก้และชื่อ) --- */
+.bg-water-theme::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* --- 3. โลโก้และชื่อ Navbar --- */
 .brand-container {
     display: flex;
     align-items: center;
@@ -79,7 +96,7 @@ body {
     opacity: 0.85;
 }
 
-/* --- 4. Navbar Links (เมนู) --- */
+/* --- 4. เมนู Navbar --- */
 .navbar-nav .nav-link {
     color: rgba(255, 255, 255, 0.85) !important;
     font-weight: 500;
@@ -98,7 +115,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* --- 5. Responsive (มือถือ) --- */
+/* --- 5. รองรับมือถือ (Responsive) --- */
 @media (max-width: 991px) {
     .brand-text .en {
         font-size: 1.1rem;
@@ -120,7 +137,7 @@ body {
     }
 }
 
-/* --- 6. Shared Animations (ใช้ร่วมกันทุกหน้า) --- */
+/* --- 6. แอนิเมชันร่วมใช้ทุกหน้า --- */
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
@@ -145,7 +162,7 @@ body {
     50% { opacity: .5; }
 }
 
-/* Table Row Animation (ใช้ร่วมกันทุกตาราง) */
+/* แอนิเมชันแถวตาราง (ใช้ร่วมกันทุกตาราง) */
 .table-row-anim {
     animation: slideInUp 0.3s ease forwards;
     opacity: 0;
@@ -182,28 +199,35 @@ body {
     100% { background-position: -200% 0; }
 }
 
-/* Button Micro-interactions (ใช้ร่วมกันทุกหน้า) */
+/* ปุ่ม Micro-interactions (ใช้ร่วมกันทุกหน้า) */
 .btn-hover-scale {
     transition: var(--transition-bounce);
 }
 .btn-hover-scale:active { transform: scale(0.95); }
 .btn-hover-scale:hover { transform: translateY(-2px); }
 
-/* Glass Card (ใช้ร่วมกันหลายหน้า) */
+/* Glass Card พรีเมียม (ใช้ร่วมกันหลายหน้า) */
 .glass-card {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-sm);
     border-radius: var(--radius-md);
     transition: var(--transition-default);
 }
 
-/* Loading Overlay Backdrop */
+.glass-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Loading Overlay */
 #loading {
     backdrop-filter: blur(4px);
 }
 
-/* --- 7. Toast Notification (Glassmorphism) --- */
+/* --- 7. Toast แจ้งเตือน (Glassmorphism) --- */
 #toast-container {
     position: fixed;
     top: 20px;

@@ -2,7 +2,7 @@
  * Dashboard Controller
  * จัดการหน้าจอหลัก แสดงรายการงาน, สถานะ, และการค้นหา
  */
-var Dashboard = {
+const Dashboard = {
     data: [],
     sortState: { column: 'jobId', direction: 'desc' },
 
@@ -17,38 +17,38 @@ var Dashboard = {
     },
 
     /**
-     * Initialize Dashboard
-     * @param {boolean} forceRefresh - If true, ignore cache and fetch new data
+     * เริ่มต้นหน้า Dashboard
+     * @param {boolean} forceRefresh - ถ้า true จะดึงข้อมูลใหม่โดยไม่ใช้ cache
      */
     init: async (forceRefresh = false) => {
         console.log("Dashboard Init...");
 
-        // Clear Edit Session
+        // ล้าง session การแก้ไขงาน
         sessionStorage.removeItem('CURRENT_EDIT_JOB');
 
-        // 1. Show Skeleton
+        // 1. แสดง Skeleton Loading
         Dashboard.renderSkeleton();
 
-        // 2. Try Cache
+        // 2. ลองโหลดจาก Cache
         const cached = localStorage.getItem('cache_dashboard_jobs');
         if (cached && !forceRefresh) {
             try {
                 Dashboard.data = JSON.parse(cached);
                 Dashboard.render(Dashboard.data);
                 Dashboard.updateStats(Dashboard.data);
-                // Background Refresh
+                // รีเฟรชข้อมูลเบื้องหลัง
                 Dashboard.fetchData(true);
                 return;
             } catch (e) { localStorage.removeItem('cache_dashboard_jobs'); }
         }
 
-        // 3. Fetch Data
+        // 3. ดึงข้อมูลจากฐานข้อมูล
         await Dashboard.fetchData();
     },
 
     /**
-     * Fetch Jobs from DB
-     * @param {boolean} isBackground - If true, suppress global loading indicators/errors
+     * ดึงข้อมูลงานจากฐานข้อมูล
+     * @param {boolean} isBackground - ถ้า true จะไม่แสดง loading/error บนหน้าจอ
      */
     fetchData: async (isBackground = false) => {
         try {
@@ -59,7 +59,7 @@ var Dashboard = {
             if (res.status === 'success') {
                 Dashboard.data = res.jobs || [];
 
-                // Calculate Totals using Utils
+                // คำนวณยอดรวมทุกงาน
                 Dashboard.data.forEach(job => {
                     const items = job.items || [];
                     if (items.length === 0) {
@@ -70,10 +70,10 @@ var Dashboard = {
                     job.totalAmount = costs.grandTotal;
                 });
 
-                // Cache Data
+                // บันทึกลง Cache
                 localStorage.setItem('cache_dashboard_jobs', JSON.stringify(Dashboard.data));
 
-                // Render
+                // แสดงผล
                 Dashboard.render(Dashboard.data);
                 Dashboard.updateStats(Dashboard.data);
             } else {
@@ -90,8 +90,8 @@ var Dashboard = {
     },
 
     /**
-     * Prepare job for editing and navigate to Form
-     * @param {string} jobId 
+     * เตรียมข้อมูลงานสำหรับแก้ไข แล้วนำทางไปหน้า Form
+     * @param {string} jobId - รหัสงานที่ต้องการแก้ไข
      */
     editJob: (jobId) => {
         const jobToEdit = Dashboard.data.find(j => String(j.jobId) === String(jobId));
@@ -105,7 +105,7 @@ var Dashboard = {
     },
 
     /**
-     * Render Skeleton Loading State
+     * แสดงสถานะ Skeleton Loading ขณะรอข้อมูล
      */
     renderSkeleton: () => {
         const tbody = document.getElementById('jobsTableBody');
@@ -125,8 +125,8 @@ var Dashboard = {
     },
 
     /**
-     * Render Job List
-     * @param {Array} list - List of jobs to render
+     * แสดงผลรายการงานในตาราง
+     * @param {Array} list - รายการงานที่จะแสดง
      */
     render: (list) => {
         const tbody = document.getElementById('jobsTableBody');
@@ -140,7 +140,7 @@ var Dashboard = {
         }
         if (emptyState) emptyState.classList.add('d-none');
 
-        // Sorting Logic
+        // ลอจิกเรียงลำดับ
         list.sort((a, b) => {
             const col = Dashboard.sortState.column;
             const dir = Dashboard.sortState.direction === 'asc' ? 1 : -1;
@@ -149,7 +149,7 @@ var Dashboard = {
             let valB = b[col];
 
             if (col === 'jobId') {
-                // Try to sort by Timestamp if available (for stability), else by ID string
+                // ลองเรียงตาม Timestamp ก่อน ถ้าไม่มีจะใช้ ID string แทน
                 const timeA = new Date(a.Timestamp || a.timestamp || 0).getTime();
                 const timeB = new Date(b.Timestamp || b.timestamp || 0).getTime();
                 if (timeA !== timeB) return (timeA - timeB) * dir;
@@ -163,7 +163,7 @@ var Dashboard = {
             return String(valA || '').localeCompare(String(valB || '')) * dir;
         });
 
-        // Update Sort Icons
+        // อัพเดตไอคอนเรียงลำดับ
         document.querySelectorAll('.fa-sort, .fa-sort-up, .fa-sort-down').forEach(el => {
             el.className = 'fa-solid fa-sort ms-1 opacity-25';
         });
@@ -172,7 +172,7 @@ var Dashboard = {
             icon.className = `fa-solid fa-sort-${Dashboard.sortState.direction === 'asc' ? 'up' : 'down'} ms-1 text-primary`;
         }
 
-        // Generate HTML
+        // สร้าง HTML สำหรับแต่ละแถว
         tbody.innerHTML = list.map((job, index) => {
             const jobId = job.jobId || '';
             let rawEst = job.estimateNo;
@@ -187,7 +187,7 @@ var Dashboard = {
             const printDate = job.printDate;
             const isPrinted = printDate && printDate !== '' && printDate !== null;
 
-            // Badge Logic
+            // ลอจิก Badge สถานะ
             const hasEstNo = Dashboard._hasEstNo(rawEst);
 
             let badgeHtml;
@@ -253,7 +253,7 @@ var Dashboard = {
 
     filter: () => {
         const term = document.getElementById('dashSearchInput').value.toLowerCase();
-        // Simple search across full object string representation
+        // ค้นหาแบบง่ายจาก JSON string ของ object ทั้งหมด
         const filtered = Dashboard.data.filter(j => JSON.stringify(j).toLowerCase().includes(term));
         Dashboard.render(filtered);
     },
@@ -271,7 +271,7 @@ var Dashboard = {
     delete: async (id) => {
         if (!confirm("ยืนยันลบรายการนี้?")) return;
 
-        // Optimistic UI Update
+        // อัพเดต UI ทันที (Optimistic)
         const originalData = [...Dashboard.data];
         Dashboard.data = Dashboard.data.filter(j => String(j.jobId) !== String(id));
         Dashboard.render(Dashboard.data);
@@ -287,7 +287,7 @@ var Dashboard = {
             }
         } catch (e) {
             Utils.showToast("ลบไม่สำเร็จ: " + e.message, 'error');
-            // Rollback
+            // ย้อนกลับข้อมูล
             Dashboard.data = originalData;
             Dashboard.render(Dashboard.data);
             Dashboard.updateStats(Dashboard.data);
@@ -324,3 +324,5 @@ var Dashboard = {
         }
     }
 };
+
+window.Dashboard = Dashboard;

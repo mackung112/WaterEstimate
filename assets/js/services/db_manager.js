@@ -10,7 +10,7 @@ const DBManager = (() => {
     );
 
     // ============================================================
-    // Helper: แปลง snake_case (DB) ↔ camelCase (Frontend)
+    // Helper: แปลง snake_case (ฐานข้อมูล) ↔ camelCase (ฝั่ง Frontend)
     // ============================================================
 
     const SNAKE_TO_CAMEL = {
@@ -95,7 +95,7 @@ const DBManager = (() => {
         _supabase: supabase,
 
         /**
-         * Normalize record (สำหรับ backward compatibility)
+         * Normalize record (สำหรับความเข้ากันย้อนหลัง)
          */
         normalizeRecord: toCamel,
 
@@ -145,13 +145,13 @@ const DBManager = (() => {
             }
         },
 
-        // Alias สำหรับ backward compatibility
+        // Alias สำหรับความเข้ากันย้อนหลัง
         getDatbase: async (limit = 0) => {
             return await DBManager.getDatabase(limit);
         },
 
         // ============================================================
-        // 2. Jobs CRUD
+        // 2. จัดการงาน (Jobs CRUD)
         // ============================================================
 
         saveJob: async (jobData) => {
@@ -208,7 +208,7 @@ const DBManager = (() => {
         },
 
         // ============================================================
-        // 3. Personnel CRUD
+        // 3. จัดการบุคลากร (Personnel CRUD)
         // ============================================================
 
         savePersonnel: async (personnelData) => {
@@ -242,7 +242,7 @@ const DBManager = (() => {
         },
 
         // ============================================================
-        // 4. Materials CRUD
+        // 4. จัดการวัสดุ (Materials CRUD)
         // ============================================================
 
         saveMaterial: async (materialData) => {
@@ -276,7 +276,7 @@ const DBManager = (() => {
         },
 
         // ============================================================
-        // 5. Print Status
+        // 5. สถานะการปริ้น (Print Status)
         // ============================================================
 
         updatePrintStatus: async (jobId, isPrinted) => {
@@ -295,7 +295,7 @@ const DBManager = (() => {
         },
 
         // ============================================================
-        // 6. File Upload (Cloudinary)
+        // 6. อัปโหลดไฟล์ (Cloudinary)
         // ============================================================
 
         /**
@@ -383,7 +383,7 @@ const DBManager = (() => {
         },
 
         // ============================================================
-        // 7. Report Generation (ยังไม่ใช้บน Supabase - คงไว้สำหรับ API compatibility)
+        // 7. สร้างรายงาน (ยังไม่ใช้บน Supabase - คงไว้สำหรับความเข้ากันของ API)
         // ============================================================
 
         createQuotation: async (jobData) => {

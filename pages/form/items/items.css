@@ -1,3 +1,6 @@
+/* --- สไตล์รายการวัสดุ --- */
+
+/* ขนาดตัวอักษรย่อ */
 .text-small-80 {
     font-size: 0.8rem;
 }
@@ -10,16 +13,46 @@
     font-size: 0.7rem;
 }
 
+/* กลุ่มปุ่มจำนวน */
 .qty-input-group {
     width: 110px;
 }
 
+.qty-input-group .btn {
+    transition: var(--transition-fast);
+}
+
+.qty-input-group .btn:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+/* Dropdown ผลการค้นหา */
 .search-results-dropdown {
     z-index: 1050;
     display: none;
     max-height: 250px;
     overflow-y: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Custom styling for section blocks if needed */
-/* .section-block { } */
+.search-results-dropdown .list-group-item {
+    transition: var(--transition-fast);
+    border-left: 3px solid transparent;
+}
+
+.search-results-dropdown .list-group-item:hover {
+    border-left-color: var(--color-primary);
+    background-color: #f0f7ff;
+}
+
+/* สไตล์บล็อก Section */
+.section-block .list-group-item {
+    transition: var(--transition-fast);
+}
+
+.section-block .list-group-item:hover {
+    background-color: #fafbff;
+}

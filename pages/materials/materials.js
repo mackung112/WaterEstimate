@@ -2,12 +2,12 @@
  * Materials Controller
  * จัดการหน้าจอรายการวัสดุ (CRUD)
  */
-var Materials = {
+const Materials = {
     data: [],
     sortState: { column: 'materialId', direction: 'asc' },
     modal: null,
 
-    // Category Config for Badge Styling
+    // ตั้งค่าสีและไอคอนตามประเภทวัสดุ
     categoryConfig: {
         '1. ส่วนติดตั้งมาตรวัดน้ำ': { class: 'cat-pvc', icon: 'fa-solid fa-faucet' },
         '2. ส่วนค่าติดตั้งเหมาจ่าย': { class: 'cat-pb', icon: 'fa-solid fa-box-open' },
@@ -19,22 +19,22 @@ var Materials = {
     },
 
     /**
-     * Initialize Materials Page
-     * @param {boolean} forceRefresh - Force fetch from DB
+     * เริ่มต้นหน้าจัดการวัสดุ
+     * @param {boolean} forceRefresh - บังคับดึงข้อมูลใหม่จากฐานข้อมูล
      */
     init: async (forceRefresh = false) => {
         const el = document.getElementById('materialModal');
         if (el) Materials.modal = new bootstrap.Modal(el);
 
-        // 1. Show Skeleton if empty
+        // 1. แสดง Skeleton ถ้าตารางว่าง
         if (forceRefresh || Materials.data.length === 0) Materials.renderSkeleton();
 
-        // 2. Load from Cache
+        // 2. โหลดจาก Cache
         const cached = localStorage.getItem('cache_materials');
         if (cached && !forceRefresh) {
             Materials.data = JSON.parse(cached);
             Materials.render(Materials.data);
-            Materials.fetchData(true); // Background refresh
+            Materials.fetchData(true); // รีเฟรชเบื้องหลัง
         } else {
             if (forceRefresh) localStorage.removeItem('cache_materials');
             await Materials.fetchData();
@@ -42,8 +42,8 @@ var Materials = {
     },
 
     /**
-     * Fetch Materials from DB
-     * @param {boolean} isBackground 
+     * ดึงข้อมูลวัสดุจากฐานข้อมูล
+     * @param {boolean} isBackground - ดึงแบบเบื้องหลังหรือไม่
      */
     fetchData: async (isBackground = false) => {
         try {
@@ -99,7 +99,7 @@ var Materials = {
         }
         emptyState.classList.add('d-none');
 
-        // Sort
+        // เรียงลำดับข้อมูล
         list.sort((a, b) => {
             const col = Materials.sortState.column;
             const dir = Materials.sortState.direction === 'asc' ? 1 : -1;
@@ -112,7 +112,7 @@ var Materials = {
             return String(valA || '').localeCompare(String(valB || ''), 'th') * dir;
         });
 
-        // Update Icons
+        // อัพเดตไอคอนเรียงลำดับ
         document.querySelectorAll('.fa-sort, .fa-sort-up, .fa-sort-down').forEach(el => {
             el.className = 'fa-solid fa-sort ms-1 opacity-25';
         });
@@ -206,7 +206,7 @@ var Materials = {
     },
 
     // ============================================================
-    // MODAL & CRUD
+    // ฟอร์ม MODAL และ CRUD
     // ============================================================
 
     openModal: () => {
@@ -262,7 +262,7 @@ var Materials = {
 
         const backupData = [...Materials.data];
 
-        // Optimistic UI
+        // อัพเดต UI ทันที (Optimistic)
         if (isNew) {
             Materials.data.push(saveData);
         } else {
@@ -293,7 +293,7 @@ var Materials = {
 
         const backupData = [...Materials.data];
 
-        // Optimistic UI
+        // อัพเดต UI ทันที (Optimistic)
         Materials.data = Materials.data.filter(m => String(m.materialId) !== String(id));
         Materials.render(Materials.data);
 
@@ -312,3 +312,5 @@ var Materials = {
         }
     }
 };
+
+window.Materials = Materials;

@@ -1,13 +1,13 @@
 /**
  * Personnel Controller
- * จัดการหน้าจอระบุบุคลากร (Surveyor, Inspector, Approver)
+ * จัดการหน้าจอระบุบุคลากร (ผู้สำรวจ, ผู้ตรวจสอบ, ผู้อนุมัติ)
  */
-var Personnel = {
+const Personnel = {
     data: [],
     sortState: { column: 'name', direction: 'asc' },
     modal: null,
 
-    // Role Configuration for Badge Styling
+    // ตั้งค่าสีและไอคอนตามบทบาทบุคลากร
     roleConfig: {
         'Surveyor': { class: 'role-surveyor', label: 'ผู้สำรวจ', icon: 'fa-solid fa-compass', color: '#1565c0' },
         'Inspector': { class: 'role-inspector', label: 'ผู้ตรวจสอบ', icon: 'fa-solid fa-clipboard-check', color: '#2e7d32' },
@@ -16,22 +16,22 @@ var Personnel = {
     },
 
     /**
-     * Initialize Personnel Page
-     * @param {boolean} forceRefresh - Force fetch from DB
+     * เริ่มต้นหน้าจัดการบุคลากร
+     * @param {boolean} forceRefresh - บังคับดึงข้อมูลใหม่จากฐานข้อมูล
      */
     init: async (forceRefresh = false) => {
         const el = document.getElementById('personnelModal');
         if (el) Personnel.modal = new bootstrap.Modal(el);
 
-        // 1. Show Skeleton if empty
+        // 1. แสดง Skeleton ถ้าตารางว่าง
         if (forceRefresh || Personnel.data.length === 0) Personnel.renderSkeleton();
 
-        // 2. Load from Cache
+        // 2. โหลดจาก Cache
         const cached = localStorage.getItem('cache_personnel');
         if (cached && !forceRefresh) {
             Personnel.data = JSON.parse(cached);
             Personnel.render(Personnel.data);
-            Personnel.fetchData(true); // Background refresh
+            Personnel.fetchData(true); // รีเฟรชเบื้องหลัง
         } else {
             if (forceRefresh) localStorage.removeItem('cache_personnel');
             await Personnel.fetchData();
@@ -39,8 +39,8 @@ var Personnel = {
     },
 
     /**
-     * Fetch Personnel from DB
-     * @param {boolean} isBackground 
+     * ดึงข้อมูลบุคลากรจากฐานข้อมูล
+     * @param {boolean} isBackground - ดึงแบบเบื้องหลังหรือไม่
      */
     fetchData: async (isBackground = false) => {
         try {
@@ -106,7 +106,7 @@ var Personnel = {
         }
         if (emptyState) emptyState.classList.add('d-none');
 
-        // Sort
+        // เรียงลำดับข้อมูล
         list.sort((a, b) => {
             const col = Personnel.sortState.column;
             const dir = Personnel.sortState.direction === 'asc' ? 1 : -1;
@@ -115,7 +115,7 @@ var Personnel = {
             return String(valA).localeCompare(String(valB), 'th') * dir;
         });
 
-        // Update Icons
+        // อัพเดตไอคอนเรียงลำดับ
         document.querySelectorAll('.fa-sort, .fa-sort-up, .fa-sort-down').forEach(el => {
             el.className = 'fa-solid fa-sort ms-1 opacity-25';
         });
@@ -206,7 +206,7 @@ var Personnel = {
     },
 
     // ============================================================
-    // MODAL & CRUD
+    // ฟอร์ม MODAL และ CRUD
     // ============================================================
 
     openModal: () => {
@@ -258,7 +258,7 @@ var Personnel = {
 
         const backupData = [...Personnel.data];
 
-        // Optimistic UI
+        // อัพเดต UI ทันที (Optimistic)
         if (isNew) {
             Personnel.data.push(newData);
         } else {
@@ -290,8 +290,8 @@ var Personnel = {
 
         const backupData = [...Personnel.data];
 
-        // Optimistic UI
-        Personnel.data = Personnel.data.filter(p => String(p.personnelId) !== String(id)); // Fix capitalization typo from original code if any
+        // อัพเดต UI ทันที (Optimistic)
+        Personnel.data = Personnel.data.filter(p => String(p.personnelId) !== String(id));
         Personnel.render(Personnel.data);
 
         try {
@@ -325,3 +325,5 @@ var Personnel = {
         window.open(url, '_blank');
     }
 };
+
+window.Personnel = Personnel;

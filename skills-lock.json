@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "skills": {
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "computedHash": "25872a21881a950edc3db1f3329664d60405d539660ce05b3265db2de06a7dfd"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "learn-projects": {
+      "source": "abdullahbeam/nexus-design-abdullah",
+      "sourceType": "github",
+      "computedHash": "68d1559e23309a2ae93711eb7749791c2ed174176c99449166d3c4ace2c8c0cb"
+    },
+    "project-guidelines-example": {
+      "source": "affaan-m/everything-claude-code",
+      "sourceType": "github",
+      "computedHash": "dfa7d74f0656b6b18b77eb1ccdae4e824781386e702c666cb0b73ed8ba7ebf98"
+    },
+    "project-metadata": {
+      "source": "bizshuk/llm_plugin",
+      "sourceType": "github",
+      "computedHash": "ccb3749245fac099b1d8c6cedeb2a98004d672a1c865e9ddf12f0aedb674b181"
+    },
+    "projectmanagement": {
+      "source": "zenobi-us/dotfiles",
+      "sourceType": "github",
+      "computedHash": "886bfb3990cea7a55f0c19a0d8733c7fef250191119dcec62666964b73d10667"
+    },
+    "web-development": {
+      "source": "tencentcloudbase/cloudbase-mcp",
+      "sourceType": "github",
+      "computedHash": "b370925945b77fbde000e46e5663cf6c986a82deecdea025e850cb96246aa047"
+    }
+  }
+}

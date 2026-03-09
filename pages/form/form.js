@@ -1,8 +1,8 @@
 /**
  * Form Controller
- * จัดการหน้าฟอร์มบันทึกข้อมูลงาน (Create/Edit Job)
+ * จัดการหน้าฟอร์มบันทึกข้อมูลงาน (สร้าง/แก้ไขงาน)
  */
-var Form = {
+const Form = {
     personnelData: [],
 
     installImages: [
@@ -13,16 +13,16 @@ var Form = {
         { name: "แบบมาตรฐาน 4 (ท่อลอย)", url: "https://i.ytimg.com/vi/bxbFQjpfi6U/hq720.jpg" },
     ],
 
-    // Global Leaflet map instance and marker
+    // Leaflet map instance และ marker สำหรับทั้งหน้า
     mapInstance: null,
     mapMarker: null,
 
     // ============================================================
-    // 1. INITIALIZATION
+    // 1. เริ่มต้นระบบ
     // ============================================================
 
     /**
-     * Initialize Form Page
+     * เริ่มต้นหน้าฟอร์ม
      */
     init: async () => {
         console.log("Form Init: Checking Data Source...");
@@ -33,30 +33,30 @@ var Form = {
         await Form.loadItemsTemplate();
 
         try {
-            // Load Database (Personnel/Materials)
+            // โหลดข้อมูลพื้นฐาน (บุคลากร/วัสดุ)
             const res = await DBManager.getDatabase();
 
             if (res.status === 'success') {
                 Form.personnelData = res.personnel || [];
                 if (window.ItemsComponent) await ItemsComponent.init(res.materials || []);
 
-                // Prepare Dropdowns
+                // เตรียม Dropdown บุคลากร
                 Form.populatePersonnel();
                 Form.renderImagesList();
 
-                // Event Listener for GIS Image Upload
+                // ติดตั้ง Event สำหรับอัปโหลดรูป GIS
                 const gisInput = document.getElementById('gisFileInput');
                 if (gisInput) {
                     gisInput.addEventListener('change', Form.handleGisUpload);
                 }
 
-                // Setup Drag & Drop for GIS Image
+                // ตั้งค่า Drag & Drop สำหรับรูป GIS
                 Form.setupGisDragDrop();
 
-                // Initialize Leaflet Map
+                // เริ่มต้น Leaflet Map
                 Form.initMap();
 
-                // Check Data Source (Priority: Session -> URL -> New)
+                // ตรวจสอบแหล่งข้อมูล (ลำดับ: Session -> URL -> สร้างใหม่)
                 const sessionData = sessionStorage.getItem('CURRENT_EDIT_JOB');
                 const params = new URLSearchParams(window.location.search);
                 let urlId = params.get('id');
@@ -104,12 +104,12 @@ var Form = {
     },
 
     // ============================================================
-    // 2. FORM DATA HANDLING
+    // 2. จัดการข้อมูลฟอร์ม
     // ============================================================
 
     /**
-     * Fill form with existing job data
-     * @param {Object} job 
+     * เติมข้อมูลงานที่มีอยู่ลงในฟอร์ม
+     * @param {Object} job - ข้อมูลงานที่ต้องการแก้ไข
      */
     fillFormData: (job) => {
         const jobId = job.jobId;
@@ -146,7 +146,7 @@ var Form = {
         setInput('Amphoe', job.amphoe || '');
         setInput('Province', job.province || '');
 
-        // Map & Images
+        // แผนที่และรูปภาพ
         const mapUrl = job.mapUrl || '';
         setInput('Map_URL', mapUrl);
         setTimeout(() => Form.previewMap(mapUrl), 100);
@@ -155,14 +155,14 @@ var Form = {
         setInput('Image_URL', imgUrl);
         Form.previewInstallImage(imgUrl);
 
-        // GIS Image
+        // รูป GIS
         const gisUrl = job.gisImageUrl || job.Gis_Image_URL || '';
         if (gisUrl) {
             setInput('Gis_Image_URL', gisUrl);
             Form.previewGisImage(gisUrl);
         }
 
-        // Re-run signature updates for all roles
+        // อัพเดตลายเซ็นสำหรับทุกบทบาท
         Form.updateSignature('surveyor');
         Form.updateSignature('inspector');
         Form.updateSignature('approver');
@@ -179,7 +179,7 @@ var Form = {
             document.getElementById('printStatusDivider').classList.add('d-none');
         }
 
-        // Personnel
+        // บุคลากร
         const loadPerson = (role, nameKey, posKey) => {
             const name = job[nameKey] || '';
             const pos = job[posKey] || '';
@@ -193,9 +193,9 @@ var Form = {
         loadPerson('Inspector', 'inspectorName', 'inspectorPos');
         loadPerson('Approver', 'approverName', 'approverPos');
 
-        // Items
+        // รายการวัสดุ
         if (window.ItemsComponent) {
-            // Determine size from Job ID Prefix or fallback
+            // กำหนดขนาดจาก Prefix รหัสงาน หรือข้อมูลงาน
             let sizeToSet = '';
             if (jobId.startsWith('12')) {
                 sizeToSet = '1/2';
@@ -207,14 +207,14 @@ var Form = {
 
             if (sizeToSet) ItemsComponent.setMeterSize(sizeToSet);
 
-            // Load Items (triggers calculation)
+            // โหลดรายการวัสดุ (ทำให้คำนวณราคาอัตโนมัติ)
             if (job.items && job.items.length > 0) ItemsComponent.setItems(job.items);
         }
 
-        // Update print buttons visibility based on Estimate No
+        // อัพเดตการแสดงปุ่มพิมพ์ตามเงื่อนไขเลขประมาณการ
         Form.updatePrintButtonsVisibility();
 
-        // Cache report data for faster loading
+        // Cache ข้อมูลสำหรับรายงานเพื่อโหลดเร็วขึ้น
         Form.cacheReportData();
     },
 
@@ -254,12 +254,12 @@ var Form = {
             imageUrl: rawData.Image_URL,
             gisImageUrl: rawData.Gis_Image_URL,
 
-            // Standardize variables for DB/Report compatibility
+            // ตั้งค่าตัวแปรมาตรฐานสำหรับความเข้ากันของฐานข้อมูล/รายงาน
             Map_URL: rawData.Map_URL,
             Image_URL: rawData.Image_URL,
             Gis_Image_URL: rawData.Gis_Image_URL,
 
-            // Personnel
+            // บุคลากร
             surveyorName: rawData.Surveyor_Name, surveyorPos: rawData.Surveyor_Pos,
             inspectorName: rawData.Inspector_Name, inspectorPos: rawData.Inspector_Pos,
             approverName: rawData.Approver_Name, approverPos: rawData.Approver_Pos,
@@ -299,11 +299,11 @@ var Form = {
     },
 
     // ============================================================
-    // 3. HELPER FUNCTIONS
+    // 3. ฟังก์ชันช่วยเหลือ
     // ============================================================
 
     /**
-     * Populate Personnel Dropdowns
+     * เตรียม Dropdown บุคลากรตามบทบาท
      */
     populatePersonnel: () => {
         const createOpt = p => `<option value="${p.name}"> (${p.position || '-'})</option>`;
@@ -339,7 +339,7 @@ var Form = {
                 ? `<img src="${person.signatureUrl}" class="h-100 w-100 object-fit-contain">`
                 : `<span class="text-muted small">ไม่มีลายเซ็น</span>`;
 
-            if (person.position) posInput.value = person.position; // Auto-fill position
+            if (person.position) posInput.value = person.position; // เติมตำแหน่งอัตโนมัติ
         } else {
             sigBox.innerHTML = '';
         }
@@ -452,7 +452,7 @@ var Form = {
         const leafletMapDiv = document.getElementById('leafletMap');
         if (!leafletMapDiv) return;
 
-        // Default to Thailand center
+        // ค่าเริ่มต้นจุดศูนย์กลางประเทศไทย
         const defaultLat = 14.3532;
         const defaultLng = 100.5691;
 
@@ -462,7 +462,7 @@ var Form = {
             attribution: '© OpenStreetMap contributors'
         }).addTo(Form.mapInstance);
 
-        // Click event to place marker
+        // คลิกบนแผนที่เพื่อปักหมุด
         Form.mapInstance.on('click', function (e) {
             const lat = e.latlng.lat;
             const lng = e.latlng.lng;
@@ -472,7 +472,7 @@ var Form = {
             Form.previewMap(coordsUrl);
         });
 
-        // Wait for modal/container to be fully visible before invalidating size
+        // รอให้หน้า่แสดงเสร็จก่อนปรับขนาดแผนที่
         setTimeout(() => {
             Form.mapInstance.invalidateSize();
         }, 500);
@@ -515,22 +515,22 @@ var Form = {
         if (box) box.style.borderStyle = 'solid';
         if (holder) holder.classList.add('d-none');
 
-        // Ensure map is initialized
+        // ตรวจสอบว่า map พร้อมใช้หรือยัง
         if (!Form.mapInstance) {
             Form.initMap();
         }
 
-        // Try extracting coordinates
+        // พยายามดึงพิกัดจาก input
         let lat, lng;
 
-        // Match exact coordinates like 14.35,100.55
+        // จับคู่พิกัดแบบ lat,lng
         const coordMatch = val.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
 
         if (coordMatch) {
             lat = parseFloat(coordMatch[1]);
             lng = parseFloat(coordMatch[3]);
         } else if (val.includes('maps.google.com')) {
-            // Try to extract q=lat,lng from URL
+            // ลองดึง q=lat,lng จาก Google Maps URL
             const urlMatch = val.match(/[?&]q=(-?\d+(\.\d+)?),(-?\d+(\.\d+)?)/);
             if (urlMatch) {
                 lat = parseFloat(urlMatch[1]);
@@ -539,7 +539,7 @@ var Form = {
         }
 
         if (lat !== undefined && lng !== undefined) {
-            // Update Leaflet map
+            // อัพเดตแผนที่ Leaflet
             Form.mapInstance.setView([lat, lng], 15);
 
             if (Form.mapMarker) {
@@ -548,7 +548,7 @@ var Form = {
                 Form.mapMarker = L.marker([lat, lng]).addTo(Form.mapInstance);
             }
 
-            // Invalidate size in case map div was hidden
+            // ปรับขนาดแผนที่กรณี div เคยถูกซ่อน
             setTimeout(() => Form.mapInstance.invalidateSize(), 100);
         }
     },
@@ -594,7 +594,7 @@ var Form = {
         const file = event.target.files ? event.target.files[0] : event;
         if (!file || !(file instanceof File)) return;
 
-        // Validations
+        // ตรวจสอบความถูกต้อง
         if (!file.type.startsWith('image/')) {
             Utils.showToast("รองรับเฉพาะไฟล์รูปภาพ (JPG, PNG, WebP)", 'error');
             const input = document.getElementById('gisFileInput');
@@ -609,7 +609,7 @@ var Form = {
             return;
         }
 
-        // Show Loading
+        // แสดงสถานะกำลังโหลด
         const overlay = document.getElementById('gisLoadingOverlay');
         const loadingText = overlay ? overlay.querySelector('small') : null;
         overlay?.classList.remove('d-none');
@@ -634,7 +634,7 @@ var Form = {
             Utils.showToast("อัปโหลดไม่สำเร็จ: " + e.message, 'error');
             document.getElementById('gisImgUrl').value = '';
         } finally {
-            // Hide Loading
+            // ซ่อนสถานะกำลังโหลด
             overlay?.classList.add('d-none');
             document.getElementById('gisFileInput').disabled = false;
             if (loadingText) loadingText.textContent = 'กำลังอัปโหลด...';
@@ -648,7 +648,7 @@ var Form = {
         const dropZone = document.querySelector('.gis-preview-box');
         if (!dropZone) return;
 
-        // Prevent default drag behaviors on document
+        // ป้องกันพฤติกรรมการลากเริ่มต้นบน document
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, (e) => {
                 e.preventDefault();
@@ -656,21 +656,21 @@ var Form = {
             });
         });
 
-        // Highlight on drag over
+        // เน้นสีเมื่อลากไฟล์เข้ามา
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => {
                 dropZone.classList.add('border-primary', 'bg-primary', 'bg-opacity-10');
             });
         });
 
-        // Remove highlight on drag leave/drop
+        // เอาสีเน้นออกเมื่อลากออก/วาง
         ['dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => {
                 dropZone.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10');
             });
         });
 
-        // Handle drop
+        // จัดการเมื่อวางไฟล์
         dropZone.addEventListener('drop', (e) => {
             const files = e.dataTransfer.files;
             if (files.length > 0) {
@@ -678,7 +678,7 @@ var Form = {
             }
         });
 
-        // Click to open file dialog
+        // คลิกเพื่อเปิด file dialog
         dropZone.addEventListener('click', (e) => {
             // ไม่ trigger ถ้าคลิกที่รูป preview (เพื่อให้สามารถคลิกขวาดูรูปได้)
             if (e.target.tagName === 'IMG') return;
@@ -708,3 +708,5 @@ var Form = {
         if (modal) modal.hide();
     }
 };
+
+window.Form = Form;

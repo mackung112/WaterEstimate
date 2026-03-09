@@ -2,11 +2,11 @@
  * ItemsComponent
  * จัดการรายการวัสดุ การคำนวณราคา และการแสดงผลในหน้าฟอร์ม
  */
-var ItemsComponent = {
+const ItemsComponent = {
     currentItems: [],
     materials: [],
 
-    // Mapping Section Name -> ID
+    // แมพชื่อ Section -> รหัส Section
     SECTION_MAPPING: {
         "1. ส่วนติดตั้งมาตรวัดน้ำ": "sec1",
         "2. ส่วนค่าติดตั้งเหมาจ่าย": "sec2",
@@ -16,7 +16,7 @@ var ItemsComponent = {
         "8. เงินประกันมาตรวัดน้ำ": "sec8"
     },
 
-    // Default Configuration for New Jobs
+    // ค่าตั้งต้นวัสดุสำหรับงานใหม่
     defaults: {
         "1/2": {
             sec1: ["MAT-000197"],
@@ -33,8 +33,8 @@ var ItemsComponent = {
     },
 
     /**
-     * Initialize Component
-     * @param {Array} materialsData - List of available materials
+     * เริ่มต้น Component
+     * @param {Array} materialsData - รายการวัสดุทั้งหมด
      */
     init: async (materialsData) => {
         console.log("ItemsComponent Init");
@@ -45,15 +45,15 @@ var ItemsComponent = {
     },
 
     // ============================================================
-    // 1. DATA MANAGEMENT (LOAD/SAVE)
+    // 1. จัดการข้อมูล (โหลด/บันทึก)
     // ============================================================
 
     /**
-     * Load items into the form (e.g. from Edit Mode)
-     * @param {Array} items 
+     * โหลดรายการวัสดุเข้าฟอร์ม (เช่น จากโหมดแก้ไข)
+     * @param {Array} items - รายการวัสดุ
      */
     setItems: (items) => {
-        // Filter out auto-calculated items (Factor F, Survey) as they are regenerated
+        // กรองรายการที่คำนวณอัตโนมัติออก (Factor F, ค่าสำรวจ)
         const realItems = (items || []).filter(i => {
             const s = i.section;
             return s !== 'sec5' && s !== 'sec6';
@@ -75,11 +75,11 @@ var ItemsComponent = {
     },
 
     /**
-     * Prepare items for saving/exporting
-     * @returns {Array} List of items with calculated totals
+     * เตรียมรายการสำหรับบันทึก/ส่งออก
+     * @returns {Array} รายการที่คำนวณยอดรวมแล้ว
      */
     getItems: () => {
-        // Calculate costs using central Utils
+        // คำนวณราคาจากฟังก์ชันกลาง Utils
         const costs = Utils.calculateJobCosts(
             ItemsComponent.currentItems,
             ItemsComponent.materials,
@@ -88,7 +88,7 @@ var ItemsComponent = {
 
         const currentJobId = document.querySelector('[name="Job_ID"]')?.value || ('JOB-' + Date.now());
 
-        // 1. Map existing items
+        // 1. แมพรายการที่มีอยู่
         const exportItems = ItemsComponent.currentItems.map((item, index) => {
             const rawMat = parseFloat(item.unitPriceMaterial || 0);
             const labor = parseFloat(item.unitPriceLabor || 0);
@@ -119,7 +119,7 @@ var ItemsComponent = {
 
         let nextIndex = exportItems.length + 1;
 
-        // 2. Add Factor F (Auto-calculated)
+        // 2. เพิ่ม Factor F (คำนวณอัตโนมัติ)
         if (costs.valFactorF > 0) {
             exportItems.push({
                 transactionId: `${currentJobId}-${nextIndex++}`,
@@ -135,7 +135,7 @@ var ItemsComponent = {
             });
         }
 
-        // 3. Add Survey Fee (Auto-calculated)
+        // 3. เพิ่มค่าสำรวจ (คำนวณอัตโนมัติ)
         if (costs.valSurvey > 0) {
             exportItems.push({
                 transactionId: `${currentJobId}-${nextIndex++}`,
@@ -155,7 +155,7 @@ var ItemsComponent = {
     },
 
     // ============================================================
-    // 2. LOGIC & INTERACTION
+    // 2. ลอจิกและการโต้ตอบ
     // ============================================================
 
     setMeterSize: (size) => {
@@ -171,15 +171,15 @@ var ItemsComponent = {
     },
 
     /**
-     * Apply default items based on meter size
-     * @param {string} size - "1/2" or "3/4"
+     * ใส่วัสดุตั้งต้นตามขนาดมาตร
+     * @param {string} size - ขนาด "1/2" หรือ "3/4"
      */
     applyDefaultItems: (size) => {
         if (ItemsComponent.currentItems.length > 0) {
             if (!confirm(`มีข้อมูลอยู่แล้ว ต้องการล้างและใช้ชุดมาตรฐาน ${size}" หรือไม่?`)) return;
         }
 
-        // Update Job ID Prefix Logic
+        // อัพเดต Prefix รหัสงาน
         const jobIdInput = document.querySelector('[name="Job_ID"]');
         if (jobIdInput) {
             let currentId = jobIdInput.value || '';
@@ -199,7 +199,7 @@ var ItemsComponent = {
             }
         }
 
-        // Apply Items
+        // ใส่รายการวัสดุ
         ItemsComponent.currentItems = [];
         let missingCount = 0;
         const config = ItemsComponent.defaults[size];
@@ -209,7 +209,7 @@ var ItemsComponent = {
                 ids.forEach(id => {
                     let mat = ItemsComponent.materials.find(m => String(m.materialId) === String(id));
 
-                    // Fallback removed as IDs are corrected in defaults
+                    // ไม่พบวัสดุในฐานข้อมูล
                     if (mat) {
                         ItemsComponent.addItemInternal(section, mat, 1);
                     } else {
@@ -220,7 +220,7 @@ var ItemsComponent = {
             }
         }
 
-        // Notify user if materials are missing (Fix for Calculation Issue)
+        // แจ้งผู้ใช้ถ้ามีวัสดุไม่ครบ (อาจทำให้คำนวณผิดพลาด)
         if (missingCount > 0) {
             Utils.showToast(`ไม่พบข้อมูลวัสดุตั้งต้นจำนวน ${missingCount} รายการ (อาจทำให้การคำนวณผิดพลาด)`, 'error');
         }
@@ -262,7 +262,7 @@ var ItemsComponent = {
             ItemsComponent.renderSection(sectionKey);
             ItemsComponent.calculateTotals();
 
-            // Clear Search
+            // ล้างการค้นหา
             const searchInput = document.getElementById(`search-${sectionKey}`);
             if (searchInput) { searchInput.value = ''; searchInput.focus(); }
             document.getElementById(`results-${sectionKey}`).style.display = 'none';
@@ -290,7 +290,7 @@ var ItemsComponent = {
     },
 
     // ============================================================
-    // 3. RENDERING
+    // 3. แสดงผล
     // ============================================================
 
     renderAllSections: () => {
@@ -336,13 +336,13 @@ var ItemsComponent = {
 
         container.innerHTML = html;
 
-        // Note: Event listener here might duplicate if renderSection called multiple times.
-        // Better to attach once in init, but for now keeping logic contained.
+        // หมายเหตุ: Event listener อาจซ้ำได้ถ้าเรียก renderSection หลายครั้ง
+        // ควรติดตั้งครั้งเดียวใน init แต่ตอนนี้เก็บไว้ใน renderSection
         // Ideally should remove old listener or check if exists.
     },
 
     /**
-     * Calculate and Update UI Totals
+     * คำนวณและอัพเดตยอดรวมบนหน้าจอ
      */
     calculateTotals: () => {
         console.log("Calculating Totals for:", ItemsComponent.currentItems);
@@ -359,13 +359,13 @@ var ItemsComponent = {
             if (el) el.innerText = val;
         };
 
-        // Update Section Totals
+        // อัพเดตยอดแต่ละ Section
         update('total-sec1', fmt(t.breakdowns[1].total));
         update('total-sec2', fmt(t.breakdowns[2].total));
         update('total-sec7', fmt(t.breakdowns[7].total));
         update('total-sec8', fmt(t.breakdowns[8].total));
 
-        // Update Complex Sections (3 & 4)
+        // อัพเดต Section ซับซ้อน (3 และ 4)
         update('total-sec3', fmt(t.breakdowns[3].total));
         update('sum-sec3-mat', fmt(t.breakdowns[3].mat));
         update('sum-sec3-buffer', fmt(t.breakdowns[3].buffer));
@@ -376,15 +376,15 @@ var ItemsComponent = {
         update('sum-sec4-buffer', fmt(t.breakdowns[4].buffer));
         update('sum-sec4-labor', fmt(t.breakdowns[4].labor));
 
-        // Update Auto-Calculated Fields
+        // อัพเดตค่าที่คำนวณอัตโนมัติ
         update('total-sec5', fmt(t.valFactorF));
         update('total-sec6', fmt(t.valSurvey));
 
-        // Update Lump Sum & Grand Total
+        // อัพเดตราคาเหมาจ่ายและยอดรวมทั้งหมด
         update('lumpSumPrice', fmt(t.lumpSumPrice));
         update('items-grand-total', fmt(t.grandTotal) + ' บาท');
 
-        // Toggle Lump Sum Indicator
+        // สลับสถานะราคาเหมาจ่าย
         const sec2Header = document.getElementById('total-sec2');
         if (sec2Header) {
             if (t.isLumpSum) {
@@ -456,3 +456,5 @@ var ItemsComponent = {
         });
     }
 };
+
+window.ItemsComponent = ItemsComponent;

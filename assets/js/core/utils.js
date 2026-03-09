@@ -1,5 +1,5 @@
 /**
- * Utils - Core Utility Functions
+ * Utils - ฟังก์ชันอรรถประโยชน์กลาง
  * รวมฟังก์ชันอรรถประโยชน์ที่ใช้บ่อยในระบบ
  */
 const Utils = {
@@ -71,7 +71,7 @@ const Utils = {
 
         container.appendChild(toast);
 
-        // Force reflow
+        // บังคับ reflow เพื่อเริ่ม animation
         void toast.offsetWidth;
         toast.classList.add('show');
 
@@ -104,10 +104,10 @@ const Utils = {
 
         let meterSize = explicitMeterSize || "";
 
-        // Helper to round currency to integer
+        // ฟังก์ชันช่วยปัดเศษเป็นจำนวนเต็ม
         const round = (n) => Math.round(n);
 
-        // 1. Group items and calculate totals
+        // 1. จัดกลุ่มรายการและคำนวณยอด
         (items || []).forEach(item => {
             const rawSec = String(item.section || '').toLowerCase().replace(/\s/g, '');
             let secNum = 0;
@@ -156,7 +156,7 @@ const Utils = {
                 lineTotal = round(lineTotal);
                 breakdowns[secNum].total += lineTotal;
 
-                // Detect Meter Size if not explicit
+                // ตรวจหาขนาดมาตรถ้าไม่ระบุไว้
                 if (!explicitMeterSize && (secNum === 1 || secNum === 8)) {
                     if (item.materialId === 'MAT-000197') meterSize = "1/2";
                     else if (item.materialId === 'MAT-000198') meterSize = "3/4";
@@ -168,20 +168,20 @@ const Utils = {
             }
         });
 
-        // Calculate Buffers for Sec 3 & 4
+        // คำนวณค่าสำรองวัสดุ 10% สำหรับ Section 3 และ 4
         breakdowns[3].buffer = round(breakdowns[3].mat * 0.10);
         breakdowns[4].buffer = round(breakdowns[4].mat * 0.10);
 
-        // Re-verify totals for Sec 3 & 4
+        // ตรวจยอดรวมใหม่สำหรับ Section 3 และ 4
         breakdowns[3].total = breakdowns[3].mat + breakdowns[3].labor + breakdowns[3].buffer;
         breakdowns[4].total = breakdowns[4].mat + breakdowns[4].labor + breakdowns[4].buffer;
 
-        // 2. Factor F & Survey
+        // 2. คำนวณ Factor F และ ค่าสำรวจ
         const sum34 = breakdowns[3].total + breakdowns[4].total;
         let valFactorF = breakdowns[5].total;
         let valSurvey = breakdowns[6].total;
 
-        // Auto-calculate if missing (Plan/Form mode or Legacy data)
+        // คำนวณอัตโนมัติถ้าไม่มีค่า
         if (sections[5].length === 0 && sum34 > 0) {
             valFactorF = round(sum34 * 1.3642);
         }
@@ -189,7 +189,7 @@ const Utils = {
             valSurvey = round(sum34 * 0.02);
         }
 
-        // 3. Lump Sum Logic
+        // 3. ลอจิกราคาเหมาจ่าย
         let lumpSumPrice = 0;
         let isLumpSum = false;
 
@@ -233,7 +233,7 @@ const Utils = {
     },
 
     /**
-     * Convert File to Base64
+     * แปลงไฟล์เป็น Base64
      */
     fileToBase64: (file) => {
         return new Promise((resolve, reject) => {
@@ -245,7 +245,7 @@ const Utils = {
     },
 
     /**
-     * Resize Image
+     * ย่อขนาดรูปภาพ
      */
     resizeImage: (file, maxSize, quality) => {
         return new Promise((resolve, reject) => {
